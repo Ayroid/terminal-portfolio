@@ -35,7 +35,7 @@ const CommandInput = () => {
         username: username,
         currentPath: currentPath,
       },
-      command: command,
+      command: command.trim().toLowerCase(),
     });
     clearCommand();
   };
