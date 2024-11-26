@@ -1,29 +1,34 @@
 import React from "react";
-
 import LsCommand from "./LsCommand";
 import CdCommand from "./CdCommand";
 import ClearCommand from "./ClearCommand";
-
 import { validCommands } from "../../data/validCommands";
 
-const CommandExecuter = ({ command }: { command: string }) => {
-  if (!validCommands.includes(command)) {
-    return "Invalid command!";
+interface CommandExecuterProps {
+  command: string;
+  frozen?: boolean;
+}
+
+const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
+  const [baseCommand, ...args] = command.trim().split(/\s+/);
+
+  if (!validCommands.includes(baseCommand)) {
+    return <div className="text-red-500">Invalid command!</div>;
   }
 
-  if (command === "ls") {
-    return <LsCommand />;
-  }
+  switch (baseCommand) {
+    case "ls":
+      return <LsCommand />;
 
-  if (command === "cd") {
-    return <CdCommand />;
-  }
+    case "cd":
+      return <CdCommand args={args[0]} />;
 
-  if (command === "clear") {
-    return <ClearCommand />;
-  }
+    case "clear":
+      return <ClearCommand />;
 
-  return null;
+    default:
+      return null;
+  }
 };
 
 export default CommandExecuter;

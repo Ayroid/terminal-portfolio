@@ -3,11 +3,27 @@ import type { fileStructureType } from "@/data/fileStructure";
 import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
 
-const CdCommand = () => {
+interface CdCommandProps {
+  args?: string;
+}
+
+const CdCommand: React.FC<CdCommandProps> = ({ args }) => {
   const { currentPath, setCurrentPath } = useCurrentPath((state) => state);
 
   useEffect(() => {
-    const executeCdCommand = () => {
+    const executeCdCommand = (targetPath?: string) => {
+      if (!targetPath) return currentPath;
+      if (targetPath === ".." || targetPath === "../") {
+        if (currentPath === "~") return "~";
+        const pathParts = currentPath.split("/");
+        pathParts.pop();
+        return pathParts.join("/");
+      }
+
+      if (targetPath === "~" || targetPath === "/") {
+        return "~";
+      }
+
       const currentDirectory: fileStructureType =
         currentPath === "~"
           ? fileStructure.find((file) => file.id === "home")!
@@ -15,19 +31,22 @@ const CdCommand = () => {
               (file) => file.id === currentPath.split("/").pop()
             )!;
 
-      const children = currentDirectory?.childrenId || [];
-      return children.length > 0 ? children[0] : null;
+      const targetExists = currentDirectory?.childrenId?.find(
+        (child) => child.id === targetPath
+      );
+
+      if (targetExists) {
+        return `${currentPath}/${targetPath}`;
+      }
+
+      return currentPath;
     };
 
-    const nextPath =
-      executeCdCommand() === null
-        ? currentPath
-        : currentPath + "/" + executeCdCommand()?.id;
-
+    const nextPath = executeCdCommand(args);
     if (nextPath !== currentPath) {
       setCurrentPath(nextPath);
     }
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return null;
 };
