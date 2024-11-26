@@ -22,7 +22,9 @@ type CommandLineHistoryStore = State & Actions;
 const useCommandLineHistoryStore = create<CommandLineHistoryStore>((set) => ({
   commandLineHistory: [],
   addCommand: (command) =>
-    set((state) => ({ commandLineHistory: [...state.commandLineHistory, command] })),
+    set((state) => ({
+      commandLineHistory: [...state.commandLineHistory, command],
+    })),
 
   clearHistory: () => set({ commandLineHistory: [] }),
 }));

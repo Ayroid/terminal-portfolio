@@ -2,17 +2,20 @@
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { useCommandLineHistory } from "@/store/commandLineHistoryStore";
+import CommandExecuter from "@/components/commands/CommandExecuter";
+import { useCurrentPath } from "@/store/currentPathStore";
 
-type CommandPathType = {
-  username: string;
-  currentPath: string;
-};
+const username = "ayroid@portfolio:";
 
-const CommandPath = ({ username, currentPath }: CommandPathType) => {
+const CommandPath = () => {
+  const { currentPath } = useCurrentPath((state) => state);
   return (
     <div className="currentpath font-hack font-semibold text-lg flex gap-1">
       <span className="text-pink">{username}</span>
-      <span className="text-green">{currentPath}</span>
+      <span className="text-green">
+        {currentPath}
+        {currentPath === "~" && "/" }
+      </span>
     </div>
   );
 };
@@ -20,15 +23,12 @@ const CommandPath = ({ username, currentPath }: CommandPathType) => {
 const CommandInput = () => {
   const { commandLineHistory, addCommand, clearHistory } =
     useCommandLineHistory((state) => state);
+  const { currentPath } = useCurrentPath((state) => state);
 
-  const [username, setUsername] = useState("ayroid@portfolio:");
-  const [currentPath, setCurrentPath] = useState("~/");
   const [command, setCommand] = useState("");
 
   const handleCommand = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (command === "") return;
 
     if (command === "clear") {
       clearHistory();
@@ -51,15 +51,13 @@ const CommandInput = () => {
       <div className="history font-hack font-semibold text-lg">
         {commandLineHistory.map((command, index) => (
           <div key={index} className="mb-2">
-            <CommandPath
-              currentPath={command.commandPath.currentPath}
-              username={command.commandPath.username}
-            />
+            <CommandPath />
             <span className="text-foreground">{command.command}</span>
+            <CommandExecuter command={command.command} />
           </div>
         ))}
       </div>
-      <CommandPath currentPath={currentPath} username={username} />
+      <CommandPath />
       <form onSubmit={handleCommand}>
         <Input
           className="w-full mt-2  border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 shadow-none focus:shadow-none appearance-none bg-background hover:bg-background focus:bg-background active:bg-background selection:bg-transparent focus:ring-offset-0 text-foreground font-hack placeholder:text-comment [&:not(:focus-visible)]:focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none m-0 p-0 !text-lg font-medium caret-pink"
