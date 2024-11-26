@@ -12,7 +12,7 @@ const CdCommand: React.FC<CdCommandProps> = ({ args }) => {
 
   useEffect(() => {
     const executeCdCommand = (targetPath?: string) => {
-      if (!targetPath) return currentPath;
+      if (!targetPath) return "~";
       if (targetPath === ".." || targetPath === "../") {
         if (currentPath === "~") return "~";
         const pathParts = currentPath.split("/");
