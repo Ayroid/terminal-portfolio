@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+			fontFamily: {
+        hack: ["Hack", "monospace"],
+      },
       colors: {
         background: "#282A36",
         currentLine: "#44475A",
