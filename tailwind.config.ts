@@ -13,7 +13,7 @@ export default {
         hack: ["Hack", "monospace"],
       },
       colors: {
-        background: "#282A36",
+        background: "#0d1117",
         currentLine: "#44475A",
         foreground: "#F8F8F2",
         comment: "#6272A4",
