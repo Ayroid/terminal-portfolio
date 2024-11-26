@@ -2,6 +2,8 @@ import React from "react";
 
 import LsCommand from "./LsCommand";
 import CdCommand from "./CdCommand";
+import ClearCommand from "./ClearCommand";
+
 import { validCommands } from "../../data/validCommands";
 
 const CommandExecuter = ({ command }: { command: string }) => {
@@ -15,6 +17,10 @@ const CommandExecuter = ({ command }: { command: string }) => {
 
   if (command === "cd") {
     return <CdCommand />;
+  }
+
+  if (command === "clear") {
+    return <ClearCommand />;
   }
 
   return null;

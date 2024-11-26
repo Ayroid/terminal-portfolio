@@ -1,9 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import CommandExecuter from "@/components/commands/CommandExecuter";
 import { Input } from "@/components/ui/input";
 import { useCommandLineHistory } from "@/store/commandLineHistoryStore";
-import CommandExecuter from "@/components/commands/CommandExecuter";
 import { useCurrentPath } from "@/store/currentPathStore";
+import React from "react";
 
 const username = "ayroid@portfolio:";
 
@@ -14,28 +14,22 @@ const CommandPath = () => {
       <span className="text-pink">{username}</span>
       <span className="text-green">
         {currentPath}
-        {currentPath === "~" && "/" }
+        {currentPath === "~" && "/"}
       </span>
     </div>
   );
 };
 
 const CommandInput = () => {
-  const { commandLineHistory, addCommand, clearHistory } =
-    useCommandLineHistory((state) => state);
-  const { currentPath } = useCurrentPath((state) => state);
-
-  const [command, setCommand] = useState("");
+  const { commandLineHistory, addCommand } = useCommandLineHistory(
+    (state) => state
+  );
+  const { currentPath, command, setCommand, clearCommand } = useCurrentPath(
+    (state) => state
+  );
 
   const handleCommand = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (command === "clear") {
-      clearHistory();
-      setCommand("");
-      return;
-    }
-
     addCommand({
       commandPath: {
         username: username,
@@ -43,7 +37,7 @@ const CommandInput = () => {
       },
       command: command,
     });
-    setCommand("");
+    clearCommand();
   };
 
   return (
