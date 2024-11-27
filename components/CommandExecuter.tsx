@@ -7,6 +7,7 @@ import PwdCommand from "@/components/commands/PwdCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
 import { HelpCommand } from "@/components/commands/HelpCommand";
 import { CatCommand } from "@/components/commands/CatCommand";
+import { SudoCommand } from "@/components/commands/SudoCommand";
 
 import { Command } from "@/store/commandLineHistoryStore";
 import { validCommands } from "@/data/constants";
@@ -44,6 +45,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "cat":
       return <CatCommand targetFile={args[0]} />;
+
+    case "sudo":
+      return <SudoCommand />;
 
     default:
       return null;

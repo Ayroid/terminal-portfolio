@@ -11,4 +11,5 @@ export const validCommands = [
   { command: "pwd", description: "Print the current working directory" },
   { command: "whoami", description: "Print the current user name" },
   { command: "help", description: "Print this help message" },
+  { command: "sudo", description: "Run a command as another user" },
 ];
