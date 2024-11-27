@@ -1,15 +1,12 @@
 export const username = "ayroid@portfolio:";
 export const user = "ayroid";
 export const validCommands = [
-  { command: "ls", description: "List directory contents" },
+  { command: "cat", description: "Concatenate files and print on the standard output" },
   { command: "cd", description: "Change the current directory" },
-  {
-    command: "cat",
-    description: "Concatenate files and print on the standard output",
-  },
   { command: "clear", description: "Clear the terminal screen" },
-  { command: "pwd", description: "Print the current working directory" },
-  { command: "whoami", description: "Print the current user name" },
   { command: "help", description: "Print this help message" },
+  { command: "ls", description: "List directory contents" },
+  { command: "pwd", description: "Print the current working directory" },
   { command: "sudo", description: "Run a command as another user" },
+  { command: "whoami", description: "Print the current user name" },
 ];

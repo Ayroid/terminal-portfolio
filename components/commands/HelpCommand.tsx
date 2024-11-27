@@ -1,6 +1,6 @@
 import { validCommands } from "@/data/constants";
 
-export const HelpCommand = () => {
+const HelpCommand = () => {
   return (
     <div>
       <p className="my-2 text-cyan font-semibold">
@@ -17,3 +17,5 @@ export const HelpCommand = () => {
     </div>
   );
 };
+
+export default HelpCommand;

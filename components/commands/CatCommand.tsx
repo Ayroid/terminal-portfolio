@@ -2,7 +2,7 @@ import type { fileStructureType } from "@/data/fileStructure";
 import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
 
-export const CatCommand = ({ targetFile }: { targetFile?: string }) => {
+const CatCommand = ({ targetFile }: { targetFile?: string }) => {
   const { currentPath } = useCurrentPath((state) => state);
 
   const executeCatCommand = (targetFile?: string) => {
@@ -45,3 +45,5 @@ export const CatCommand = ({ targetFile }: { targetFile?: string }) => {
 
   return <div>{output}</div>;
 };
+
+export default CatCommand;

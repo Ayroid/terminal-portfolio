@@ -1,4 +1,4 @@
-export const SudoCommand = () => {
+const SudoCommand = () => {
   return (
     <div className="text-red">
       <span className="font-semibold">Access denied: </span>Only ayroid can
@@ -6,3 +6,5 @@ export const SudoCommand = () => {
     </div>
   );
 };
+
+export default SudoCommand;

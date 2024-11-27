@@ -1,16 +1,16 @@
 import React from "react";
 
-import LsCommand from "@/components/commands/LsCommand";
+import CatCommand from "@/components/commands/CatCommand";
 import CdCommand from "@/components/commands/CdCommand";
 import ClearCommand from "@/components/commands/ClearCommand";
+import HelpCommand from "@/components/commands/HelpCommand";
+import LsCommand from "@/components/commands/LsCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
+import SudoCommand from "@/components/commands/SudoCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
-import { HelpCommand } from "@/components/commands/HelpCommand";
-import { CatCommand } from "@/components/commands/CatCommand";
-import { SudoCommand } from "@/components/commands/SudoCommand";
 
-import { Command } from "@/store/commandLineHistoryStore";
 import { validCommands } from "@/data/constants";
+import { Command } from "@/store/commandLineHistoryStore";
 
 interface CommandExecuterProps {
   command: Command;
@@ -25,8 +25,8 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
   }
 
   switch (baseCommand) {
-    case "ls":
-      return <LsCommand commandPath={commandPath} />;
+    case "cat":
+      return <CatCommand targetFile={args[0]} />;
 
     case "cd":
       return <CdCommand targetPath={args[0]} />;
@@ -34,20 +34,20 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
     case "clear":
       return <ClearCommand />;
 
-    case "pwd":
-      return <PwdCommand commandPath={commandPath} />;
-
-    case "whoami":
-      return <WhoamiCommand />;
-
     case "help":
       return <HelpCommand />;
 
-    case "cat":
-      return <CatCommand targetFile={args[0]} />;
+    case "ls":
+      return <LsCommand commandPath={commandPath} />;
+
+    case "pwd":
+      return <PwdCommand commandPath={commandPath} />;
 
     case "sudo":
       return <SudoCommand />;
+
+    case "whoami":
+      return <WhoamiCommand />;
 
     default:
       return null;
