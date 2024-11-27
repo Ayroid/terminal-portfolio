@@ -7,8 +7,7 @@ import React from "react";
 
 const username = "ayroid@portfolio:";
 
-const CommandPath = () => {
-  const { currentPath } = useCurrentPath((state) => state);
+const CommandPath = ({ currentPath }: { currentPath: string }) => {
   return (
     <div className="currentpath font-hack font-semibold text-lg flex gap-1">
       <span className="text-pink">{username}</span>
@@ -19,7 +18,6 @@ const CommandPath = () => {
     </div>
   );
 };
-
 const CommandInput = () => {
   const { commandLineHistory, addCommand } = useCommandLineHistory(
     (state) => state
@@ -45,13 +43,13 @@ const CommandInput = () => {
       <div className="history font-hack font-semibold text-lg">
         {commandLineHistory.map((command, index) => (
           <div key={index} className="mb-2">
-            <CommandPath />
+             <CommandPath currentPath={command.commandPath.currentPath} />
             <span className="text-foreground">{command.command}</span>
             <CommandExecuter command={command.command} />
           </div>
         ))}
       </div>
-      <CommandPath />
+      <CommandPath currentPath={currentPath} />
       <form onSubmit={handleCommand}>
         <Input
           className="w-full mt-2  border-0 outline-none focus:outline-none focus:ring-0 focus:border-0 shadow-none focus:shadow-none appearance-none bg-background hover:bg-background focus:bg-background active:bg-background selection:bg-transparent focus:ring-offset-0 text-foreground font-hack placeholder:text-comment [&:not(:focus-visible)]:focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none m-0 p-0 !text-lg font-medium caret-pink"
