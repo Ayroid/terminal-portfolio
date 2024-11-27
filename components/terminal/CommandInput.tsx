@@ -45,7 +45,7 @@ const CommandInput = () => {
           <div key={index} className="mb-2">
              <CommandPath currentPath={command.commandPath.currentPath} />
             <span className="text-foreground">{command.command}</span>
-            <CommandExecuter command={command.command} />
+            <CommandExecuter command={command} />
           </div>
         ))}
       </div>

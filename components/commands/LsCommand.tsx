@@ -1,26 +1,23 @@
 import React from "react";
 import type { fileStructureType } from "../../data/fileStructure";
 import { fileStructure } from "../../data/fileStructure";
-import { useCurrentPath } from "@/store/currentPathStore";
 
-const LSCommand = () => {
-  const { currentPath } = useCurrentPath((state) => state);
-
+const LSCommand = ({ commandPath }: { commandPath: string }) => {
   const executeLsCommand = (
-    currentPath: string
+    commandPath: string
   ): { id: string; type: string }[] => {
     const currentDirectory: fileStructureType =
-      currentPath === "~"
+      commandPath === "~"
         ? fileStructure.filter((file) => file.id === "home")[0]
         : fileStructure.filter(
-            (file) => file.id === currentPath.split("/").pop()
+            (file) => file.id === commandPath.split("/").pop()
           )[0];
 
-          const children = currentDirectory?.childrenId || [];
+    const children = currentDirectory?.childrenId || [];
     return children;
   };
 
-  const commandResult = executeLsCommand(currentPath);
+  const commandResult = executeLsCommand(commandPath);
 
   return (
     <div className="flex flex-row gap-4">

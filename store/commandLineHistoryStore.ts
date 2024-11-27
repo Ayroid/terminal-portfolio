@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type Command = {
+export type Command = {
   commandPath: {
     username: string;
     currentPath: string;
