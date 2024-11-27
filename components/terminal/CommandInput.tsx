@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { useCommandLineHistory } from "@/store/commandLineHistoryStore";
 import { useCurrentPath } from "@/store/currentPathStore";
 import React from "react";
-
-const username = "ayroid@portfolio:";
+import { username } from "@/data/constants";
 
 const CommandPath = ({ currentPath }: { currentPath: string }) => {
   return (
@@ -40,11 +39,11 @@ const CommandInput = () => {
 
   return (
     <div className="w-full">
-      <div className="history font-hack font-semibold text-lg">
+      <div className="history font-hack text-lg">
         {commandLineHistory.map((command, index) => (
           <div key={index} className="mb-2">
-             <CommandPath currentPath={command.commandPath.currentPath} />
-            <span className="text-foreground">{command.command}</span>
+            <CommandPath currentPath={command.commandPath.currentPath} />
+            <span className="font-semibold">{command.command}</span>
             <CommandExecuter command={command} />
           </div>
         ))}
