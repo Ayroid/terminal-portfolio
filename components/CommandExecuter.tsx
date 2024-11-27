@@ -17,7 +17,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
   const [baseCommand, ...args] = command.command.trim().split(/\s+/);
   const commandPath = command.commandPath.currentPath;
 
-  if (!validCommands.includes(baseCommand)) {
+  if (!validCommands.some(cmd => cmd.command === baseCommand)) {
     return <div className="text-red-500">Invalid command!</div>;
   }
 
