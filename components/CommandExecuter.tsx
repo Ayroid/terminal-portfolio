@@ -5,6 +5,7 @@ import CdCommand from "@/components/commands/CdCommand";
 import ClearCommand from "@/components/commands/ClearCommand";
 import DateCommand from "@/components/commands/DateCommand";
 import EchoCommand from "@/components/commands/EchoCommand";
+import GitCommand from "@/components/commands/GitCommand";
 import HistoryCommand from "@/components/commands/HistoryCommand";
 import HelpCommand from "@/components/commands/HelpCommand";
 import LsCommand from "@/components/commands/LsCommand";
@@ -42,6 +43,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "echo":
       return <EchoCommand text={args.join(" ")} />;
+
+    case "git":
+      return <GitCommand />;
 
     case "history":
       return <HistoryCommand />;
