@@ -5,10 +5,11 @@ import CdCommand from "@/components/commands/CdCommand";
 import ClearCommand from "@/components/commands/ClearCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
+import { HelpCommand } from "@/components/commands/HelpCommand";
+import { CatCommand } from "@/components/commands/CatCommand";
 
 import { Command } from "@/store/commandLineHistoryStore";
 import { validCommands } from "@/data/constants";
-import { HelpCommand } from "./commands/HelpCommand";
 
 interface CommandExecuterProps {
   command: Command;
@@ -40,6 +41,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "help":
       return <HelpCommand />;
+
+    case "cat":
+      return <CatCommand targetFile={args[0]} />;
 
     default:
       return null;
