@@ -26,54 +26,10 @@ export const fileStructure: fileStructureType[] = [
         type: "directory",
       },
       {
-        id: "app",
+        id: "app.txt",
         type: "file",
       },
     ],
-  },
-  {
-    id: "pages",
-    name: "pages",
-    type: "directory",
-    parentId: "home",
-    childrenId: [
-      {
-        id: "about",
-        type: "file",
-      },
-      {
-        id: "projects",
-        type: "file",
-      },
-    ],
-  },
-  {
-    id: "about",
-    name: "about",
-    type: "file",
-    parentId: "pages",
-    childrenId: [],
-    content: `export default function About() {
-                      return (
-                        <div>
-                          <h1>About</h1>
-                        </div>
-                      );
-                    }`,
-  },
-  {
-    id: "projects",
-    name: "projects",
-    type: "file",
-    parentId: "pages",
-    childrenId: [],
-    content: `export default function Projects() {
-                      return (
-                        <div>
-                          <h1>Projects</h1>
-                        </div>
-                      );
-                    }`,
   },
   {
     id: "components",
@@ -94,22 +50,66 @@ export const fileStructure: fileStructureType[] = [
     parentId: "components",
     childrenId: [
       {
-        id: "CommandInput.txt",
+        id: "command.txt",
         type: "file",
       },
     ],
   },
   {
-    id: "CommandInput.txt",
-    name: "CommandInput.txt",
+    id: "command.txt",
+    name: "command.txt",
     type: "file",
     parentId: "terminal",
     childrenId: [],
     content: `import { Input } from "@/components/ui/input";`,
   },
   {
-    id: "app",
-    name: "app",
+    id: "pages",
+    name: "pages",
+    type: "directory",
+    parentId: "home",
+    childrenId: [
+      {
+        id: "about.txt",
+        type: "file",
+      },
+      {
+        id: "projects.txt",
+        type: "file",
+      },
+    ],
+  },
+  {
+    id: "about.txt",
+    name: "about.txt",
+    type: "file",
+    parentId: "pages",
+    childrenId: [],
+    content: `export default function About() {
+                      return (
+                        <div>
+                          <h1>About</h1>
+                        </div>
+                      );
+                    }`,
+  },
+  {
+    id: "projects.txt",
+    name: "projects.txt",
+    type: "file",
+    parentId: "pages",
+    childrenId: [],
+    content: `export default function Projects() {
+                      return (
+                        <div>
+                          <h1>Projects</h1>
+                        </div>
+                      );
+                    }`,
+  },
+  {
+    id: "app.txt",
+    name: "app.txt",
     type: "file",
     parentId: "home",
     childrenId: [],
