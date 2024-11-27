@@ -4,6 +4,7 @@ export const validCommands = [
   { command: "cat", description: "Concatenate files and print on the standard output" },
   { command: "cd", description: "Change the current directory" },
   { command: "clear", description: "Clear the terminal screen" },
+  { command: "history", description: "Print the history of commands" },
   { command: "help", description: "Print this help message" },
   { command: "ls", description: "List directory contents" },
   { command: "pwd", description: "Print the current working directory" },

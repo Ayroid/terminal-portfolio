@@ -3,6 +3,7 @@ import React from "react";
 import CatCommand from "@/components/commands/CatCommand";
 import CdCommand from "@/components/commands/CdCommand";
 import ClearCommand from "@/components/commands/ClearCommand";
+import HistoryCommand from "@/components/commands/HistoryCommand";
 import HelpCommand from "@/components/commands/HelpCommand";
 import LsCommand from "@/components/commands/LsCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
@@ -33,6 +34,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "clear":
       return <ClearCommand />;
+
+    case "history":
+      return <HistoryCommand />;
 
     case "help":
       return <HelpCommand />;
