@@ -1,6 +1,6 @@
 const DateCommand = () => {
   const date = new Date().toDateString();
-  return <div>{date}</div>;
+  return <div className="text-orange">{date}</div>;
 };
 
 export default DateCommand;
