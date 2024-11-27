@@ -1,1 +1,1 @@
-export const validCommands = ["ls", "cd", "clear"];
+export const validCommands = ["ls", "cd", "clear", "pwd"];

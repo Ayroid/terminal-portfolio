@@ -1,5 +1,5 @@
 "use client";
-import CommandExecuter from "@/components/commands/CommandExecuter";
+import CommandExecuter from "@/components/CommandExecuter";
 import { Input } from "@/components/ui/input";
 import { useCommandLineHistory } from "@/store/commandLineHistoryStore";
 import { useCurrentPath } from "@/store/currentPathStore";

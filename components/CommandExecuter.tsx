@@ -1,9 +1,10 @@
 import React from "react";
-import LsCommand from "./LsCommand";
-import CdCommand from "./CdCommand";
-import ClearCommand from "./ClearCommand";
-import { validCommands } from "../../data/validCommands";
+import LsCommand from "./commands/LsCommand";
+import CdCommand from "./commands/CdCommand";
+import ClearCommand from "./commands/ClearCommand";
+import { validCommands } from "../data/validCommands";
 import { Command } from "@/store/commandLineHistoryStore";
+import PwdCommand from "./commands/PwdCommand";
 
 interface CommandExecuterProps {
   command: Command;
@@ -26,6 +27,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "clear":
       return <ClearCommand />;
+
+    case "pwd":
+      return <PwdCommand />;
 
     default:
       return null;
