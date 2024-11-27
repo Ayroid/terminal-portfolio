@@ -3,6 +3,7 @@ import React from "react";
 import CatCommand from "@/components/commands/CatCommand";
 import CdCommand from "@/components/commands/CdCommand";
 import ClearCommand from "@/components/commands/ClearCommand";
+import DateCommand from "@/components/commands/DateCommand";
 import EchoCommand from "@/components/commands/EchoCommand";
 import HistoryCommand from "@/components/commands/HistoryCommand";
 import HelpCommand from "@/components/commands/HelpCommand";
@@ -35,6 +36,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "clear":
       return <ClearCommand />;
+
+    case "date":
+       return <DateCommand />;
 
     case "echo":
       return <EchoCommand text={args.join(" ")} />;
