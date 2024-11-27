@@ -96,17 +96,12 @@ const GitCommand = () => {
         setContributions(
           contributionData.user.contributionsCollection.contributionCalendar
         );
-      } catch (error: {
-        status: number;
-        response: {
-          data: {
-            message: string;
-          };
-        };
-      }) {
-        console.error(
-          `Error! Status: ${error.status}. Message: ${error.response?.data?.message}`
-        );
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          console.error(`Error! Message: ${error.message}`);
+        } else {
+          console.error("An unknown error occurred.");
+        }
       } finally {
         setLoading(false);
       }
