@@ -32,7 +32,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
       return <ClearCommand />;
 
     case "pwd":
-      return <PwdCommand />;
+      return <PwdCommand commandPath={commandPath} />;
 
     case "whoami":
       return <WhoamiCommand />;

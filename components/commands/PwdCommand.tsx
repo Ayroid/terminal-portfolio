@@ -1,8 +1,5 @@
-import { useCurrentPath } from "@/store/currentPathStore";
-
-const PwdCommand: React.FC = () => {
-  const { currentPath } = useCurrentPath((state) => state);
-  return <div>{currentPath}</div>;
+const PwdCommand = ({ commandPath }: { commandPath: string }) => {
+  return <div>{commandPath}</div>;
 };
 
 export default PwdCommand;
