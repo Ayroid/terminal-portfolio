@@ -5,5 +5,6 @@ export const validCommands = [
   { command: "cd", description: "Change the current directory" },
   { command: "clear", description: "Clear the terminal screen" },
   { command: "pwd", description: "Print the current working directory" },
-  { command: "whoami", description: "Print the current user name" }
+  { command: "whoami", description: "Print the current user name" },
+  { command: "help", description: "Print this help message" },
 ];

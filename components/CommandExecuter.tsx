@@ -8,6 +8,7 @@ import WhoamiCommand from "@/components/commands/WhoamiCommand";
 
 import { Command } from "@/store/commandLineHistoryStore";
 import { validCommands } from "@/data/constants";
+import { HelpCommand } from "./commands/HelpCommand";
 
 interface CommandExecuterProps {
   command: Command;
@@ -17,8 +18,8 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
   const [baseCommand, ...args] = command.command.trim().split(/\s+/);
   const commandPath = command.commandPath.currentPath;
 
-  if (!validCommands.some(cmd => cmd.command === baseCommand)) {
-    return <div className="text-red-500">Invalid command!</div>;
+  if (!validCommands.some((cmd) => cmd.command === baseCommand)) {
+    return <div className="text-red">command not found: {baseCommand}</div>;
   }
 
   switch (baseCommand) {
@@ -36,6 +37,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "whoami":
       return <WhoamiCommand />;
+
+    case "help":
+      return <HelpCommand />;
 
     default:
       return null;
