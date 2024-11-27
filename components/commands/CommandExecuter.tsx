@@ -22,7 +22,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
       return <LsCommand commandPath={commandPath} />;
 
     case "cd":
-      return <CdCommand args={args[0]} />;
+      return <CdCommand targetPath={args[0]} />;
 
     case "clear":
       return <ClearCommand />;

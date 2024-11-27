@@ -94,14 +94,14 @@ export const fileStructure: fileStructureType[] = [
     parentId: "components",
     childrenId: [
       {
-        id: "CommandInput",
+        id: "CommandInput.txt",
         type: "file",
       },
     ],
   },
   {
-    id: "CommandInput",
-    name: "CommandInput",
+    id: "CommandInput.txt",
+    name: "CommandInput.txt",
     type: "file",
     parentId: "terminal",
     childrenId: [],

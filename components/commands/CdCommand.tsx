@@ -4,10 +4,10 @@ import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
 
 interface CdCommandProps {
-  args?: string;
+  targetPath?: string;
 }
 
-const CdCommand: React.FC<CdCommandProps> = ({ args }) => {
+const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
   const { currentPath, setCurrentPath } = useCurrentPath((state) => state);
 
   useEffect(() => {
@@ -42,7 +42,7 @@ const CdCommand: React.FC<CdCommandProps> = ({ args }) => {
       return currentPath;
     };
 
-    const nextPath = executeCdCommand(args);
+    const nextPath = executeCdCommand(targetPath);
     if (nextPath !== currentPath) {
       setCurrentPath(nextPath);
     }
