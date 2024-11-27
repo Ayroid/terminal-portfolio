@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Octokit } from "octokit";
 import { User, Users, GitFork, Star } from "lucide-react";
+import Image from "next/image";
 
 const GitCommand = () => {
   interface UserStats {
@@ -95,7 +96,14 @@ const GitCommand = () => {
         setContributions(
           contributionData.user.contributionsCollection.contributionCalendar
         );
-      } catch (error: any) {
+      } catch (error: {
+        status: number;
+        response: {
+          data: {
+            message: string;
+          };
+        };
+      }) {
         console.error(
           `Error! Status: ${error.status}. Message: ${error.response?.data?.message}`
         );
@@ -108,11 +116,7 @@ const GitCommand = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div>
-        Loading...
-      </div>
-    );
+    return <div>Loading...</div>;
   }
 
   if (!stats || !contributions) {
@@ -128,7 +132,7 @@ const GitCommand = () => {
       <div className="flex flex-col items-start gap-6 flex-wrap md:flex-nowrap">
         {/* Profile Section */}
         <div className="w-full flex bg-transparent items-center gap-6">
-          <img
+          <Image
             src={stats.avatarUrl}
             alt="User Avatar"
             className="rounded-full w-32 h-32"
