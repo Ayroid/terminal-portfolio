@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import type { fileStructureType } from "@/data/fileStructure";
 import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
@@ -9,19 +9,20 @@ interface CdCommandProps {
 
 const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
   const { currentPath, setCurrentPath } = useCurrentPath((state) => state);
+  const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
     const executeCdCommand = (targetPath?: string) => {
-      if (!targetPath) return "~";
+      if (!targetPath) return { path: "~", error: "" };
       if (targetPath === ".." || targetPath === "../") {
-        if (currentPath === "~") return "~";
+        if (currentPath === "~") return { path: "~", error: "" };
         const pathParts = currentPath.split("/");
         pathParts.pop();
-        return pathParts.join("/");
+        return { path: pathParts.join("/"), error: "" };
       }
 
       if (targetPath === "~" || targetPath === "/") {
-        return "~";
+        return { path: "~", error: "" };
       }
 
       const currentDirectory: fileStructureType =
@@ -36,19 +37,26 @@ const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
       );
 
       if (targetExists) {
-        return `${currentPath}/${targetPath}`;
+        if (targetExists.type === "directory") {
+          return { path: `${currentPath}/${targetPath}`, error: "" };
+        } else {
+          return { path: currentPath, error: `cd: not a directory: ${targetPath}` };
+        }
+      } else {
+        return { path: currentPath, error: "" };
       }
-
-      return currentPath;
     };
 
-    const nextPath = executeCdCommand(targetPath);
-    if (nextPath !== currentPath) {
-      setCurrentPath(nextPath);
+    const { path, error } = executeCdCommand(targetPath);
+    if (path !== currentPath) {
+      setCurrentPath(path);
+    }
+    if (error) {
+      setOutput(error);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return null;
+  return output ? <div className="text-red">{output}</div> : null;
 };
 
 export default CdCommand;
