@@ -6,8 +6,11 @@ import ClearCommand from "@/components/commands/ClearCommand";
 import DateCommand from "@/components/commands/DateCommand";
 import EchoCommand from "@/components/commands/EchoCommand";
 import GitCommand from "@/components/commands/GitCommand";
-import HistoryCommand from "@/components/commands/HistoryCommand";
+import GitHubCommand from "@/components/commands/GitHubCommand";
+import HashnodeCommand from "@/components/commands/HashnodeCommand";
 import HelpCommand from "@/components/commands/HelpCommand";
+import HistoryCommand from "@/components/commands/HistoryCommand";
+import LinkedInCommand from "@/components/commands/LinkedInCommand";
 import LsCommand from "@/components/commands/LsCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
 import SudoCommand from "@/components/commands/SudoCommand";
@@ -39,7 +42,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
       return <ClearCommand />;
 
     case "date":
-       return <DateCommand />;
+      return <DateCommand />;
 
     case "echo":
       return <EchoCommand text={args.join(" ")} />;
@@ -47,11 +50,20 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
     case "git":
       return <GitCommand />;
 
-    case "history":
-      return <HistoryCommand />;
+    case "github":
+      return <GitHubCommand />;
+
+    case "hashnode":
+      return <HashnodeCommand />;
 
     case "help":
       return <HelpCommand />;
+
+    case "history":
+      return <HistoryCommand />;
+
+    case "linkedin":
+      return <LinkedInCommand />;
 
     case "ls":
       return <LsCommand commandPath={commandPath} />;
