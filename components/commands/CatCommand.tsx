@@ -5,8 +5,24 @@ import { useCurrentPath } from "@/store/currentPathStore";
 const CatCommand = ({ targetFile }: { targetFile?: string }) => {
   const { currentPath } = useCurrentPath((state) => state);
 
+  const containsHTML = (text: string): boolean => {
+    return /<[a-z][\s\S]*>/i.test(text);
+  };
+
+  const renderContent = (content: string) => {
+    if (containsHTML(content)) {
+      return (
+        <div
+          className="formatted-html"
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      );
+    }
+    return <div className="plain-text">{content}</div>;
+  };
+
   const executeCatCommand = (targetFile?: string) => {
-    if (!targetFile) return { output: "cat: missing operand" };
+    if (!targetFile) return { output: "cat: missing operand", result: "error" };
 
     const currentDirectory: fileStructureType =
       currentPath === "~"
@@ -22,7 +38,7 @@ const CatCommand = ({ targetFile }: { targetFile?: string }) => {
     if (targetExists) {
       if (targetExists.type === "file") {
         const file = fileStructure.find((file) => file.id === targetFile)!;
-        return { output: file.content, result: "sucess" };
+        return { output: file.content, result: "success" };
       } else {
         return {
           output: `cat: ${targetFile}: Is a directory`,
@@ -43,7 +59,7 @@ const CatCommand = ({ targetFile }: { targetFile?: string }) => {
     return <div className="text-red">{output}</div>;
   }
 
-  return <div>{output}</div>;
+  return output ? renderContent(output) : null;
 };
 
 export default CatCommand;
