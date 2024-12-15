@@ -1,7 +1,11 @@
-const about = `I'm Ayush Singh Kushwah,
-a Full Stack Developer and Aspiring DevOps
-I'm a Final Year BTech Computer Science student specializing in DevOps at the University of Petroleum and Energy Studies.
+const about = `<div class="about-content">
+  <br/>
+  <p>👋 <strong>I'm Ayush Singh Kushwah,</strong></p>
+  <p>👨‍💻 a <em>Full Stack Developer</em> and 🛠️ <em>Aspiring DevOps Engineer</em></p>
 
-Passionate about Full Stack Development and DevOps, I thrive on building innovative solutions. With a commitment to sharing knowledge, I actively contribute to the open-source ecosystem.`;
+  <p>🎓 I'm a Final Year BTech Computer Science student specializing in DevOps at the <strong>University of Petroleum and Energy Studies</strong>.</p>
+
+  <p>💡 Passionate about <em>Full Stack Development</em> and <em>DevOps</em>, I thrive on building innovative solutions. With a commitment to sharing knowledge, I actively contribute to the 🌟 <em>open-source ecosystem</em>.</p>
+</div>`;
 
 export default about;
