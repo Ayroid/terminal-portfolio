@@ -45,6 +45,10 @@ export const fileStructure: fileStructureType[] = [
         id: "skills.txt",
         type: "file",
       },
+      {
+        id: "resume",
+        type: "directory",
+      },
     ],
   },
   {
@@ -92,6 +96,26 @@ Passionate about Full Stack Development and DevOps, I thrive on building innovat
     </div>
 </div>
 `,
+  },
+  {
+    id: "resume",
+    name: "resume",
+    type: "directory",
+    parentId: "about",
+    childrenId: [
+      {
+        id: "resume.pdf",
+        type: "file",
+      },
+    ],
+  },
+  {
+    id: "resume.pdf",
+    name: "resume.pdf",
+    type: "file",
+    parentId: "resume",
+    childrenId: [],
+    content: "https://drive.google.com/file/d/1",
   },
   {
     id: "projects",

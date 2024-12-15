@@ -15,6 +15,7 @@ export const validCommands = [
   { command: "ls", description: "List directory contents" },
   { command: "pwd", description: "Print the current working directory" },
   { command: "sudo", description: "Run a command as another user" },
+  { command: "tree", description: "List contents of directories in a tree-like format" },
   { command: "twitter", description: "Opens my Twitter profile" },
   { command: "whoami", description: "Print the current user name" },
 ];
