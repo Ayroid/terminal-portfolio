@@ -1,3 +1,6 @@
+import aboutText from "@/data/content/about";
+import skillsText from "@/data/content/skills";
+
 export type fileStructureType = {
   id: string;
   name: string;
@@ -57,11 +60,7 @@ export const fileStructure: fileStructureType[] = [
     type: "file",
     parentId: "about",
     childrenId: [],
-    content: `I'm Ayush Singh Kushwah,
-a Full Stack Developer and Aspiring DevOps
-I'm a Final Year BTech Computer Science student specializing in DevOps at the University of Petroleum and Energy Studies.
-
-Passionate about Full Stack Development and DevOps, I thrive on building innovative solutions. With a commitment to sharing knowledge, I actively contribute to the open-source ecosystem.`,
+    content: aboutText,
   },
   {
     id: "skills.txt",
@@ -69,33 +68,7 @@ Passionate about Full Stack Development and DevOps, I thrive on building innovat
     type: "file",
     parentId: "about",
     childrenId: [],
-    content: `
-<div class="skills-list">
-    <div class="skill-category">
-        <i>Languages:</i> JavaScript, TypeScript, Python, Java, C++, C
-    </div>
-
-    <div class="skill-category">
-        <i>Frontend:</i> React, Redux, HTML, CSS, Bootstrap, Material-UI
-    </div>
-
-    <div class="skill-category">
-        <i>Backend:</i> Node.js, Express, Django
-    </div>
-
-    <div class="skill-category">
-        <i>Databases:</i> MongoDB, MySQL, SQLite
-    </div>
-
-    <div class="skill-category">
-        <i>Tools:</i> Git, Docker, Jenkins, Kubernetes, AWS, Azure, GCP
-    </div>
-
-    <div class="skill-category">
-        <i>DevOps:</i> CI/CD, Jenkins, Docker, Kubernetes, Helm, Terraform, Ansible, Prometheus, Grafana, ELK Stack
-    </div>
-</div>
-`,
+    content: skillsText,
   },
   {
     id: "resume",
