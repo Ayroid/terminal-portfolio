@@ -14,6 +14,7 @@ import LinkedInCommand from "@/components/commands/LinkedInCommand";
 import LsCommand from "@/components/commands/LsCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
 import SudoCommand from "@/components/commands/SudoCommand";
+import TwitterCommand from "@/components/commands/TwitterCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
 
 import { validCommands } from "@/data/constants";
@@ -73,6 +74,9 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
 
     case "sudo":
       return <SudoCommand />;
+
+    case "twitter":
+      return <TwitterCommand />;
 
     case "whoami":
       return <WhoamiCommand />;
