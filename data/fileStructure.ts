@@ -1,4 +1,5 @@
 import aboutText from "@/data/content/about";
+import resumeText from "@/data/content/resume";
 import skillsText from "@/data/content/skills";
 
 export type fileStructureType = {
@@ -49,8 +50,8 @@ export const fileStructure: fileStructureType[] = [
         type: "file",
       },
       {
-        id: "resume",
-        type: "directory",
+        id: "resume.txt",
+        type: "file",
       },
     ],
   },
@@ -71,16 +72,12 @@ export const fileStructure: fileStructureType[] = [
     content: skillsText,
   },
   {
-    id: "resume",
-    name: "resume",
-    type: "directory",
+    id: "resume.txt",
+    name: "resume.txt",
+    type: "file",
     parentId: "about",
-    childrenId: [
-      {
-        id: "resume.pdf",
-        type: "file",
-      },
-    ],
+    childrenId: [],
+    content: resumeText,
   },
   {
     id: "resume.pdf",
