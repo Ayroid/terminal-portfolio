@@ -40,7 +40,7 @@ const TerminalHeader = () => {
           <div className="mt-4 text-white">
             Welcome to my portfolio!
             <br />
-            Type <span className="text-orange-500 font-semibold">help</span> to
+            Type <span className="text-orange font-semibold">help</span> to
             get a list of available commands.
           </div>
         </>
