@@ -25,14 +25,6 @@ export const fileStructure: fileStructureType[] = [
         id: "about",
         type: "directory",
       },
-      {
-        id: "pages",
-        type: "directory",
-      },
-      {
-        id: "app.txt",
-        type: "file",
-      },
     ],
   },
   {
@@ -78,14 +70,6 @@ export const fileStructure: fileStructureType[] = [
     parentId: "about",
     childrenId: [],
     content: resumeText,
-  },
-  {
-    id: "resume.pdf",
-    name: "resume.pdf",
-    type: "file",
-    parentId: "resume",
-    childrenId: [],
-    content: "https://drive.google.com/file/d/1",
   },
   {
     id: "projects",
