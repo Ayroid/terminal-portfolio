@@ -14,6 +14,7 @@ export function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   const themes: Array<{ name: string; value: Theme }> = [
+    { name: "Catppuccin", value: "catppuccin" },
     { name: "Dracula", value: "dracula" },
     { name: "Solarized Dark", value: "solarized" },
     { name: "Nord", value: "nord" },
@@ -22,7 +23,6 @@ export function ThemeSwitcher() {
     { name: "Monokai", value: "monokai" },
     { name: "Tokyo Night", value: "tokyo-night" },
     { name: "GitHub Dark", value: "github-dark" },
-    { name: "Catppuccin", value: "catppuccin" },
     { name: "Material", value: "material" },
   ];
 

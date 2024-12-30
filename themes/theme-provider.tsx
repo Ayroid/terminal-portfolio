@@ -10,12 +10,12 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType>({
-  theme: "dracula",
+  theme: "catppuccin",
   setTheme: () => null,
 });
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("dracula");
+  const [theme, setTheme] = useState<Theme>("catppuccin");
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
