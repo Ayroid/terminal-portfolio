@@ -9,7 +9,7 @@ import { username } from "@/data/constants";
 const CommandPath = ({ currentPath }: { currentPath: string }) => {
   return (
     <div className="currentpath font-hack font-semibold text-lg flex gap-1">
-      <span className="text-pink">{username}</span>
+      <span className="text-primary">{username}</span>
       <span className="text-green">
         {currentPath}
         {currentPath === "~" && "/"}

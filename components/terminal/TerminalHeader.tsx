@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useEffect, useState } from "react";
+import { ThemeSwitcher } from "../ThemeSwitcher";
 
 const TerminalHeader = () => {
   const [showHeader, setShowHeader] = useState(true);
@@ -40,16 +41,17 @@ const TerminalHeader = () => {
           <div className="mt-4 text-white">
             Welcome to my portfolio!
             <br />
-            Type <span className="text-orange font-semibold">help</span> to
-            get a list of available commands.
+            Type <span className="text-orange font-semibold">help</span> to get
+            a list of available commands.
           </div>
         </>
       )}
-      <div className="fixed bottom-6 right-8 text-sm font-semibold">
+      <div className="fixed bottom-6 right-8 text-sm font-semibold flex flex-col items-end gap-4">
+        <ThemeSwitcher />
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger
-              className="text-pink"
+              className="text-primary"
               onClick={() => setShowHeader((prev) => !prev)}
             >
               Ctrl + Alt + /

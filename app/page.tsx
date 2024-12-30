@@ -1,7 +1,7 @@
 "use client";
+import InitialLoading from "@/components/InitialLoading";
 import CommandInput from "@/components/terminal/CommandInput";
 import TerminalHeader from "@/components/terminal/TerminalHeader";
-import InitialLoading from "@/components/InitialLoading";
 import { useState } from "react";
 
 export default function Home() {
@@ -12,7 +12,7 @@ export default function Home() {
   }
 
   return (
-    <div className="container mx-auto p-8 max-w-4xl">
+    <div className="container mx-auto p-8 max-w-4xl theme-scroller">
       <TerminalHeader />
       <CommandInput />
     </div>
