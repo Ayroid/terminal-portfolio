@@ -21,7 +21,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if parent directory exists
     if (parentId) {
       const parentDir = await FileSystem.findOne({
         id: parentId,
@@ -35,10 +34,8 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Generate unique ID
     const id = `${name}-${Date.now()}`;
 
-    // Create new directory
     const newDirectory = await FileSystem.create({
       id,
       name,
