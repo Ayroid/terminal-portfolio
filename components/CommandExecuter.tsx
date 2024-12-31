@@ -71,7 +71,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
       return <LinkedInCommand />;
 
     case "ls":
-      return <LsCommand commandPath={commandPath} />;
+      return <LsCommand />;
 
     case "mkdir":
       return <MkdirCommand dirName={args[0]} />;
