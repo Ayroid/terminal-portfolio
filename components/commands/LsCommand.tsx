@@ -1,16 +1,18 @@
-import { useCurrentPath } from "@/store/currentPathStore";
 import { useFileSystem } from "@/store/fileSystemStore";
 import type { FileSystemType } from "@/types/fileSystemType";
 import React from "react";
 
-const LSCommand: React.FC = () => {
+interface LSCommandProps {
+  commandPath: string;
+}
+
+const LSCommand: React.FC<LSCommandProps> = ({ commandPath }) => {
   const { files } = useFileSystem();
-  const { currentPath } = useCurrentPath((state) => state);
 
   const executeLsCommand = (): FileSystemType[] => {
     return files.filter((file) => {
       const parentPath = file.path.substring(0, file.path.lastIndexOf("/"));
-      return parentPath === currentPath;
+      return parentPath === commandPath;
     });
   };
 
