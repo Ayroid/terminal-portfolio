@@ -1,6 +1,7 @@
-import type { fileStructureType } from "@/data/fileStructure";
+
 import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
+import { fileStructureType } from "@/types/fileStructureType";
 
 const CatCommand = ({ targetFile }: { targetFile?: string }) => {
   const { currentPath } = useCurrentPath((state) => state);

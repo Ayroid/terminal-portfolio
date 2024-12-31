@@ -1,18 +1,9 @@
 import aboutText from "@/data/content/about";
 import resumeText from "@/data/content/resume";
 import skillsText from "@/data/content/skills";
+import { fileStructureType } from "@/types/fileStructureType";
 
-export type fileStructureType = {
-  id: string;
-  name: string;
-  type: string;
-  parentId: string;
-  childrenId: {
-    id: string;
-    type: string;
-  }[];
-  content?: string;
-};
+
 
 export const fileStructure: fileStructureType[] = [
   {

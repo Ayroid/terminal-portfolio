@@ -1,7 +1,10 @@
 export const username = "ayroid@portfolio:";
 export const user = "ayroid";
 export const validCommands = [
-  { command: "cat", description: "Concatenate files and print on the standard output" },
+  {
+    command: "cat",
+    description: "Concatenate files and print on the standard output",
+  },
   { command: "cd", description: "Change the current directory" },
   { command: "clear", description: "Clear the terminal screen" },
   { command: "date", description: "Print the current date" },
@@ -13,9 +16,15 @@ export const validCommands = [
   { command: "history", description: "Print the history of commands" },
   { command: "linkedin", description: "Opens my linkedin profile" },
   { command: "ls", description: "List directory contents" },
+  { command: "mkdir", description: "Create a directory" },
   { command: "pwd", description: "Print the current working directory" },
+  { command: "rm", description: "Remove files or directories" },
   { command: "sudo", description: "Run a command as another user" },
-  { command: "tree", description: "List contents of directories in a tree-like format" },
+  { command: "touch", description: "Create a file" },
+  {
+    command: "tree",
+    description: "List contents of directories in a tree-like format",
+  },
   { command: "twitter", description: "Opens my Twitter profile" },
   { command: "whoami", description: "Print the current user name" },
 ];

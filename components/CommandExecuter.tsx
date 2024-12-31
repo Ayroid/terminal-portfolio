@@ -12,8 +12,11 @@ import HelpCommand from "@/components/commands/HelpCommand";
 import HistoryCommand from "@/components/commands/HistoryCommand";
 import LinkedInCommand from "@/components/commands/LinkedInCommand";
 import LsCommand from "@/components/commands/LsCommand";
+import MkdirCommand from "@/components/commands/MkdirCommand";
 import PwdCommand from "@/components/commands/PwdCommand";
+import RmCommand from "@/components/commands/RmCommand";
 import SudoCommand from "@/components/commands/SudoCommand";
+import TouchCommand from "@/components/commands/TouchCommand";
 import TreeCommand from "@/components/commands/TreeCommand";
 import TwitterCommand from "@/components/commands/TwitterCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
@@ -70,11 +73,22 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
     case "ls":
       return <LsCommand commandPath={commandPath} />;
 
+    case "mkdir":
+      return <MkdirCommand dirName={args[0]} />;
+
     case "pwd":
       return <PwdCommand commandPath={commandPath} />;
 
+    case "rm":
+      const isRecursive = args[0] === "-r" || args[0] === "-rf";
+      const target = isRecursive ? args[1] : args[0];
+      return <RmCommand target={target} recursive={isRecursive} />;
+
     case "sudo":
       return <SudoCommand />;
+
+    case "touch":
+      return <TouchCommand fileName={args[0]} />;
 
     case "tree":
       return <TreeCommand />;
