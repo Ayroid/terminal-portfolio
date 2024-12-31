@@ -10,9 +10,14 @@ import { FileSystemType } from "@/types/fileSystemType";
 async function createFileSystemNode(
   file: FileSystemType,
   ownerId: string,
-  parentPath: string = ''
+  parentPath: string = ""
 ): Promise<mongoose.Document> {
-  const path = parentPath ? `${parentPath}/${file.name}` : `/${file.name}`;
+  const path =
+    file.name === "~"
+      ? file.name
+      : parentPath
+      ? `${parentPath}/${file.name}`
+      : `/${file.name}`;
 
   const nodeData = {
     ...file,
@@ -37,18 +42,18 @@ async function initializeFileSystem(
 
   // First pass: Create all directories
   for (const file of files) {
-    if (file.type === 'directory') {
-      const parentPath = file.parentId ? nodeMap.get(file.parentId) || '' : '';
+    if (file.type === "directory") {
+      const parentPath = file.parentId ? nodeMap.get(file.parentId) || "" : "";
       const node = await createFileSystemNode(file, ownerId, parentPath);
-      nodeMap.set(file.id, node.get('path'));
+      nodeMap.set(file.id, node.get("path"));
       createdNodes.push(node);
     }
   }
 
   // Second pass: Create all files
   for (const file of files) {
-    if (file.type === 'file') {
-      const parentPath = nodeMap.get(file.parentId) || '';
+    if (file.type === "file") {
+      const parentPath = nodeMap.get(file.parentId) || "";
       const node = await createFileSystemNode(file, ownerId, parentPath);
       createdNodes.push(node);
     }
@@ -66,17 +71,14 @@ export async function GET() {
 
     await connectDB();
 
-    // Check if user already has a file structure
     let userFiles = await FileSystem.find({ owner: session.user.id })
-      .populate('children')
-      .sort('path');
+      .populate("children")
+      .sort("path");
 
-    // If user doesn't have any files, initialize with default structure
     if (userFiles.length === 0) {
       try {
         userFiles = await initializeFileSystem(fileStructure, session.user.id);
       } catch (error) {
-        // Cleanup on error
         await FileSystem.deleteMany({ owner: session.user.id });
         throw error;
       }
@@ -105,8 +107,8 @@ export async function POST() {
     await connectDB();
 
     const userFiles = await FileSystem.find({ owner: session.user.id })
-      .populate('children')
-      .sort('path');
+      .populate("children")
+      .sort("path");
 
     return NextResponse.json(userFiles, { status: 200 });
   } catch (error) {
