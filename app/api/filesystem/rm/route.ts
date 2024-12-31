@@ -13,17 +13,15 @@ export async function DELETE(request: NextRequest) {
 
     await connectDB();
 
-    // Get id from searchParams instead of query
-    const id = request.nextUrl.searchParams.get("id");
-    if (!id) {
-      return NextResponse.json(
-        { error: "File/Directory ID is required" },
-        { status: 400 }
-      );
-    }
+    const data = await request.json();
+    const { id } = data;
+    const recursive = request.nextUrl.searchParams.get("recursive") === "true";
 
-    // Find the item to delete
-    const item = await FileSystem.findOne({ id, owner: session.user.id });
+    const item = await FileSystem.findOne({
+      id,
+      owner: session.user.id,
+    });
+
     if (!item) {
       return NextResponse.json(
         { error: "File/Directory not found" },
@@ -31,20 +29,28 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    // If it's a directory, recursively delete all children
-    if (item.type === "directory") {
-      await deleteRecursive(item.id, session.user.id);
-    }
-
-    // Remove item from parent's childrenId array
-    if (item.parentId) {
-      await FileSystem.updateOne(
-        { id: item.parentId },
-        { $pull: { childrenId: { id: item.id } } }
+    if (item.type === "directory" && !recursive) {
+      return NextResponse.json(
+        { error: "Is a directory, use -r flag" },
+        { status: 400 }
       );
     }
 
-    // Delete the item itself
+    if (item.path === "~" || item.path === "~/about") {
+      return NextResponse.json({ error: "Permission denied" }, { status: 403 });
+    }
+
+    if (recursive) {
+      await deleteRecursive(item.id, session.user.id);
+    }
+
+    if (item.parentId) {
+      await FileSystem.updateOne(
+        { id: item.parentId },
+        { $pull: { childrenId: item.id } }
+      );
+    }
+
     await FileSystem.deleteOne({ id: item.id });
 
     return NextResponse.json(
@@ -60,9 +66,11 @@ export async function DELETE(request: NextRequest) {
   }
 }
 
-// Helper function to recursively delete directories
 async function deleteRecursive(parentId: string, ownerId: string) {
-  const children = await FileSystem.find({ parentId, owner: ownerId });
+  const children = await FileSystem.find({
+    parentId,
+    owner: ownerId,
+  });
 
   for (const child of children) {
     if (child.type === "directory") {

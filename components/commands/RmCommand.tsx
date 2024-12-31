@@ -10,7 +10,7 @@ interface RmCommandProps {
 
 const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
   const { currentPath } = useCurrentPath((state) => state);
-  const { files } = useFileSystem();
+  const { files, removeFile } = useFileSystem();
   const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
@@ -21,16 +21,15 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
       }
 
       try {
-        const basePath = currentPath === "~" ? "~" : currentPath;
-        const targetPath = `${basePath}/${target}`;
-        const targetNode = files.find(file => file.path === targetPath);
+        const targetPath = `${currentPath}/${target}`;
+        const targetFile = files.find(f => f.path === targetPath);
 
-        if (!targetNode) {
+        if (!targetFile) {
           setOutput(`rm: cannot remove '${target}': No such file or directory`);
           return;
         }
 
-        if (targetNode.type === "directory" && !recursive) {
+        if (targetFile.type === "directory" && !recursive) {
           setOutput(`rm: cannot remove '${target}': Is a directory, use -r flag`);
           return;
         }
@@ -40,15 +39,16 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
           return;
         }
 
-        await axios.delete(`/api/filesystem/rm`, {
-          params: {
-            path: targetPath,
-            recursive
-          }
+        const response = await axios.delete('/api/filesystem/rm', {
+          data: { id: targetFile.id },
+          params: { recursive }
         });
 
+        console.log(response.data);
+
+        removeFile(targetFile.id);
         setOutput("");
-      } catch (error: unknown) {
+      } catch (error) {
         const errorMsg = axios.isAxiosError(error) && error.response?.data?.error
           ? error.response.data.error
           : "Error occurred";
@@ -57,9 +57,9 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
     };
 
     executeRmCommand(target);
-  }, [target, recursive, currentPath, files]);
+  }, [target, recursive, currentPath, files, removeFile]);
 
-  return output ? <div className="text-red">{output}</div> : null;
+  return output ? <div className="text-red-500">{output}</div> : null;
 };
 
 export default RmCommand;
