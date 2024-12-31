@@ -130,7 +130,9 @@ const GitCommand = () => {
           <Image
             src={stats.avatarUrl}
             alt="User Avatar"
-            className="rounded-full w-32 h-32"
+            height={128}
+            width={128}
+            className="rounded-full"
           />
           <div className="flex flex-col justify-center">
             <div>
