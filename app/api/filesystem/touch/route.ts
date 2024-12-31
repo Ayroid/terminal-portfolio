@@ -13,19 +13,21 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const { name, parentId, content = "" } = await request.json();
-    if (!name) {
+    const { name, parentId, path, content = "" } = await request.json();
+
+    if (!name || !path) {
       return NextResponse.json(
-        { error: "File name is required" },
+        { error: "File name and path are required" },
         { status: 400 }
       );
     }
 
-    // Check if parent directory exists
     const parentDir = await FileSystem.findOne({
       id: parentId,
       type: "directory",
+      owner: session.user.id,
     });
+
     if (!parentDir) {
       return NextResponse.json(
         { error: "Parent directory not found" },
@@ -33,13 +35,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate unique ID
     const id = `${name}-${Date.now()}`;
 
-    // Create new file
     const newFile = await FileSystem.create({
       id,
       name,
+      path,
       type: "file",
       parentId,
       childrenId: [],
@@ -47,11 +48,7 @@ export async function POST(request: NextRequest) {
       owner: session.user.id,
     });
 
-    // Update parent's childrenId array
-    await FileSystem.updateOne(
-      { id: parentId },
-      { $push: { childrenId: { id, type: "file" } } }
-    );
+    await FileSystem.updateOne({ id: parentId }, { $push: { childrenId: id } });
 
     return NextResponse.json(newFile, { status: 201 });
   } catch (error) {

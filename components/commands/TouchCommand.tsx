@@ -9,7 +9,7 @@ interface TouchCommandProps {
 
 const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
   const { currentPath } = useCurrentPath((state) => state);
-  const { files } = useFileSystem();
+  const { files, addFile } = useFileSystem();
   const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
@@ -20,22 +20,15 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
       }
 
       try {
-        // Convert to absolute path
-        const basePath = currentPath === "~" ? "~" : currentPath;
-        const filePath = `${basePath}/${fileName}`;
-
-        // Check if file already exists
+        const filePath = `${currentPath}/${fileName}`;
         const fileExists = files.some((file) => file.path === filePath);
+
         if (fileExists) {
-          // If file exists, just update its timestamp (not implemented yet)
           setOutput("");
           return;
         }
 
-        // Get parent directory
-        const parentPath = basePath;
-        const parentDir = files.find((file) => file.path === parentPath);
-
+        const parentDir = files.find((file) => file.path === currentPath);
         if (!parentDir) {
           setOutput(
             `touch: cannot create file '${fileName}': Parent directory not found`
@@ -43,31 +36,28 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
           return;
         }
 
-        await axios.post("/api/filesystem/touch", {
+        const response = await axios.post("/api/filesystem/touch", {
           name: fileName,
           parentId: parentDir.id,
           path: filePath,
-          content: "", // Empty content for new file
+          content: "",
         });
 
-        setOutput(""); // Clear any previous error messages on success
-      } catch (error: unknown) {
-        if (axios.isAxiosError(error) && error.response) {
-          setOutput(
-            `touch: cannot create file '${fileName}': ${
-              error.response.data.error || "Error occurred"
-            }`
-          );
-        } else {
-          setOutput(`touch: cannot create file '${fileName}': Error occurred`);
-        }
+        addFile(response.data);
+        setOutput("");
+      } catch (error) {
+        const errorMsg =
+          axios.isAxiosError(error) && error.response?.data?.error
+            ? error.response.data.error
+            : "Error occurred";
+        setOutput(`touch: cannot create file '${fileName}': ${errorMsg}`);
       }
     };
 
     executeTouchCommand(fileName);
-  }, [fileName, currentPath, files]);
+  }, [fileName, currentPath, files, addFile]);
 
-  return output ? <div className="text-red">{output}</div> : null;
+  return output ? <div className="text-red-500">{output}</div> : null;
 };
 
 export default TouchCommand;
