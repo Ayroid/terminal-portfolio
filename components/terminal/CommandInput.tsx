@@ -17,7 +17,7 @@ const CommandPath = ({ currentPath }: { currentPath: string }) => {
     </div>
   );
 };
-const CommandInput = () => {
+const  CommandInput = () => {
   const { commandLineHistory, addCommand } = useCommandLineHistory(
     (state) => state
   );
