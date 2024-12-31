@@ -25,6 +25,6 @@ export const validCommands = [
     command: "tree",
     description: "List contents of directories in a tree-like format",
   },
-  { command: "twitter", description: "Opens my Twitter profile" },
+  { command: "x", description: "Opens my x profile" },
   { command: "whoami", description: "Print the current user name" },
 ];

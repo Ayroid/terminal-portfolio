@@ -18,7 +18,7 @@ import RmCommand from "@/components/commands/RmCommand";
 import SudoCommand from "@/components/commands/SudoCommand";
 import TouchCommand from "@/components/commands/TouchCommand";
 import TreeCommand from "@/components/commands/TreeCommand";
-import TwitterCommand from "@/components/commands/TwitterCommand";
+import XCommand from "@/components/commands/XCommand";
 import WhoamiCommand from "@/components/commands/WhoamiCommand";
 
 import { validCommands } from "@/data/constants";
@@ -93,8 +93,8 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
     case "tree":
       return <TreeCommand />;
 
-    case "twitter":
-      return <TwitterCommand />;
+    case "x":
+      return <XCommand />;
 
     case "whoami":
       return <WhoamiCommand />;
