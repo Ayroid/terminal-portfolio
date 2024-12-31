@@ -51,7 +51,7 @@ const TreeCommand = () => {
         });
       };
 
-      traverse("/~");
+      traverse("~");
       return result;
     };
 

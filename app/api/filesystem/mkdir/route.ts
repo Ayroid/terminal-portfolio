@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
 
-    const { name, parentId } = await request.json();
+    const { name, parentId, path } = await request.json();
     if (!name) {
       return NextResponse.json(
         { error: "Directory name is required" },
@@ -43,12 +43,12 @@ export async function POST(request: NextRequest) {
       id,
       name,
       type: "directory",
+      path: path,
       parentId: parentId || "",
       childrenId: [],
       owner: session.user.id,
     });
 
-    // Update parent's childrenId array
     if (parentId) {
       await FileSystem.updateOne(
         { id: parentId },

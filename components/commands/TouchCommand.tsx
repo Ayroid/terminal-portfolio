@@ -21,7 +21,7 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
 
       try {
         // Convert to absolute path
-        const basePath = currentPath === "~" ? "/~" : currentPath;
+        const basePath = currentPath === "~" ? "~" : currentPath;
         const filePath = `${basePath}/${fileName}`;
 
         // Check if file already exists

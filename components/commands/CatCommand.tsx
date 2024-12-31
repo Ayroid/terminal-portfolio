@@ -42,7 +42,7 @@ const CatCommand = ({ targetFile }: { targetFile?: string }) => {
     if (fileSystem.length === 0) return { output: "", result: "loading" };
 
     // Get current directory path
-    const basePath = currentPath === "~" ? "/~" : `/~/${currentPath}`;
+    const basePath = currentPath === "~" ? "~" : `~/${currentPath}`;
     const currentDirectory = fileSystem.find((file) => file.path === basePath);
 
     if (!currentDirectory) {

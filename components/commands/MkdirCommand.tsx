@@ -20,34 +20,35 @@ const MkdirCommand: React.FC<MkdirCommandProps> = ({ dirName }) => {
       }
 
       try {
-        // Convert current path to absolute path
-        const basePath = currentPath === "~" ? "/~" : currentPath;
-        const newDirPath = `${basePath}/${dirName}`;
+        const newDirPath = `${currentPath}/${dirName}`;
 
-        // Check if directory already exists
-        const directoryExists = files.some(file => file.path === newDirPath);
+        const directoryExists = files.some((file) => file.path === newDirPath);
         if (directoryExists) {
           setOutput(`mkdir: cannot create directory '${dirName}': File exists`);
           return;
         }
 
-        // Get parent path and ID
-        const parentPath = basePath;
-        const parentDir = files.find(file => file.path === parentPath);
+        console.log("Current path", currentPath);
 
-        if (!parentDir) {
-          setOutput(`mkdir: cannot create directory '${dirName}': Parent directory not found`);
+        const parentDir = files.find((file) => file.path === currentPath);
+
+        console.log("Parent dir", parentDir);
+
+        if (parentDir === undefined || parentDir === null) {
+          console.log("Parent dir not found");
+          setOutput(
+            `mkdir: cannot create directory '${dirName}': Parent directory not found`
+          );
           return;
         }
 
         await axios.post("/api/filesystem/mkdir", {
           name: dirName,
           parentId: parentDir.id,
-          path: newDirPath
+          path: newDirPath,
         });
 
-        setOutput(""); // Clear any previous error messages on success
-
+        setOutput("");
       } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           setOutput(
@@ -64,7 +65,8 @@ const MkdirCommand: React.FC<MkdirCommandProps> = ({ dirName }) => {
     };
 
     executeMkdirCommand(dirName);
-  }, [dirName, currentPath, files]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return output ? <div className="text-red">{output}</div> : null;
 };

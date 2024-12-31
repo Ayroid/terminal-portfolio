@@ -21,7 +21,7 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
       }
 
       try {
-        const basePath = currentPath === "~" ? "/~" : currentPath;
+        const basePath = currentPath === "~" ? "~" : currentPath;
         const targetPath = `${basePath}/${target}`;
         const targetNode = files.find(file => file.path === targetPath);
 
@@ -35,7 +35,7 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
           return;
         }
 
-        if (targetPath === "/~" || targetPath === "/~/about") {
+        if (targetPath === "~" || targetPath === "~/about") {
           setOutput(`rm: cannot remove '${target}': Permission denied`);
           return;
         }
