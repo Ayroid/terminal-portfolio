@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ThemeProvider } from "@/themes/theme-provider";
+import { Providers } from "./providers";
 
 export const metadata: Metadata = {
   title: "Ayroid",
@@ -18,7 +19,9 @@ export default function RootLayout({
         <link rel="icon" href="/logo.png" />
       </head>
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <Providers>
+          <ThemeProvider>{children}</ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
