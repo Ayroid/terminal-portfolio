@@ -9,6 +9,7 @@ export default function Home() {
   const [isBooting, setIsBooting] = useState(true);
 
   useFileSystemInit();
+
   if (isBooting) {
     return <InitialLoading setIsBooting={setIsBooting} />;
   }

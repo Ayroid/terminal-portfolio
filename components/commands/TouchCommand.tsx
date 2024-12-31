@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useCurrentPath } from "@/store/currentPathStore";
+import { useFileSystem } from "@/store/fileSystemStore";
 import axios from "axios";
 
 interface TouchCommandProps {
@@ -8,6 +9,7 @@ interface TouchCommandProps {
 
 const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
   const { currentPath } = useCurrentPath((state) => state);
+  const { files } = useFileSystem();
   const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
@@ -18,13 +20,37 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
       }
 
       try {
-        const parentId =
-          currentPath === "~" ? "home" : currentPath.split("/").pop();
+        // Convert to absolute path
+        const basePath = currentPath === "~" ? "/~" : currentPath;
+        const filePath = `${basePath}/${fileName}`;
+
+        // Check if file already exists
+        const fileExists = files.some((file) => file.path === filePath);
+        if (fileExists) {
+          // If file exists, just update its timestamp (not implemented yet)
+          setOutput("");
+          return;
+        }
+
+        // Get parent directory
+        const parentPath = basePath;
+        const parentDir = files.find((file) => file.path === parentPath);
+
+        if (!parentDir) {
+          setOutput(
+            `touch: cannot create file '${fileName}': Parent directory not found`
+          );
+          return;
+        }
+
         await axios.post("/api/filesystem/touch", {
           name: fileName,
-          parentId,
+          parentId: parentDir.id,
+          path: filePath,
           content: "", // Empty content for new file
         });
+
+        setOutput(""); // Clear any previous error messages on success
       } catch (error: unknown) {
         if (axios.isAxiosError(error) && error.response) {
           setOutput(
@@ -39,7 +65,7 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
     };
 
     executeTouchCommand(fileName);
-  }, [fileName, currentPath]);
+  }, [fileName, currentPath, files]);
 
   return output ? <div className="text-red">{output}</div> : null;
 };

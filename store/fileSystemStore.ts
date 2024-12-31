@@ -1,13 +1,13 @@
 // store/fileSystemStore.ts
 import { create } from "zustand";
-import type { fileStructureType } from "@/types/fileStructureType";
+import type { FileSystemType } from "@/types/fileSystemType";
 
 interface FileSystemState {
-  files: fileStructureType[];
-  setFiles: (files: fileStructureType[]) => void;
-  addFile: (file: fileStructureType) => void;
+  files: FileSystemType[];
+  setFiles: (files: FileSystemType[]) => void;
+  addFile: (file: FileSystemType) => void;
   removeFile: (id: string) => void;
-  updateFile: (id: string, updates: Partial<fileStructureType>) => void;
+  updateFile: (id: string, updates: Partial<FileSystemType>) => void;
 }
 
 export const useFileSystem = create<FileSystemState>((set) => ({

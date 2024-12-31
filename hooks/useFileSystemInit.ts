@@ -14,6 +14,7 @@ export const useFileSystemInit = () => {
       if (status === "authenticated" && session) {
         try {
           const response = await axios.get("/api/filesystem/init");
+          console.log("File system initialized:", response.data);
           setFiles(response.data);
         } catch (error) {
           console.error("Error initializing file system:", error);

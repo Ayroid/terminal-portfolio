@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
 import { useCurrentPath } from "@/store/currentPathStore";
 import { useFileSystem } from "@/store/fileSystemStore";
-import type { fileStructureType } from "@/types/fileStructureType";
+import { useEffect, useState } from "react";
 
 interface CdCommandProps {
   targetPath?: string;
@@ -10,50 +9,31 @@ interface CdCommandProps {
 const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
   const { currentPath, setCurrentPath } = useCurrentPath((state) => state);
   const { files } = useFileSystem();
-
-  console.log("files", files);
   const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
     const executeCdCommand = (targetPath?: string) => {
-      if (!targetPath) return { path: "~", error: "" };
+      if (!targetPath) return { path: "/~", error: "" };
 
       // Handle special cases
       if (targetPath === ".." || targetPath === "../") {
-        if (currentPath === "~") return { path: "~", error: "" };
+        if (currentPath === "/~") return { path: "/~", error: "" };
         const pathParts = currentPath.split("/");
         pathParts.pop();
-        return { path: pathParts.join("/"), error: "" };
+        return { path: pathParts.join("/") || "/~", error: "" };
       }
 
       if (targetPath === "~" || targetPath === "/") {
-        return { path: "~", error: "" };
+        return { path: "/~", error: "" };
       }
 
-      // Find current directory in the file system
-      const currentDirectory: fileStructureType | undefined =
-        currentPath === "~"
-          ? files.find((file) => file.id === "home")
-          : files.find((file) => file.id === currentPath.split("/").pop());
+      // Construct the target path
+      const basePath = currentPath === "/~" ? "/~" : currentPath;
+      const newPath = `${basePath}/${targetPath}`;
 
-      if (!currentDirectory) {
-        return { path: currentPath, error: "cd: current directory not found" };
-      }
+      // Find the target directory in the file system
+      const targetDir = files.find(file => file.path === newPath);
 
-      // Check if target exists in current directory
-      const targetExists = currentDirectory.childrenId?.find(
-        (child) => child.id === targetPath
-      );
-
-      if (!targetExists) {
-        return {
-          path: currentPath,
-          error: `cd: no such file or directory: ${targetPath}`,
-        };
-      }
-
-      // Find target in file system to check its type
-      const targetDir = files.find((file) => file.id === targetPath);
       if (!targetDir) {
         return {
           path: currentPath,
@@ -62,7 +42,7 @@ const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
       }
 
       if (targetDir.type === "directory") {
-        return { path: `${currentPath}/${targetPath}`, error: "" };
+        return { path: newPath, error: "" };
       } else {
         return {
           path: currentPath,
@@ -77,8 +57,10 @@ const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
     }
     if (error) {
       setOutput(error);
+    } else {
+      setOutput("");
     }
-  }, [targetPath, currentPath, setCurrentPath, files]); // Added proper dependencies
+  }, [targetPath, currentPath, setCurrentPath, files]);
 
   return output ? <div className="text-red">{output}</div> : null;
 };

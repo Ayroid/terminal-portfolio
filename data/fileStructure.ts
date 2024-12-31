@@ -1,49 +1,29 @@
 import aboutText from "@/data/content/about";
 import resumeText from "@/data/content/resume";
 import skillsText from "@/data/content/skills";
-import { fileStructureType } from "@/types/fileStructureType";
+import { FileSystemType } from "@/types/fileSystemType";
 
-
-
-export const fileStructure: fileStructureType[] = [
+export const fileStructure: FileSystemType[] = [
   {
     id: "home",
     name: "~",
     type: "directory",
     parentId: "",
-    childrenId: [
-      {
-        id: "about",
-        type: "directory",
-      },
-    ],
+    path: "/~",
   },
   {
     id: "about",
     name: "about",
     type: "directory",
     parentId: "home",
-    childrenId: [
-      {
-        id: "ayroid.txt",
-        type: "file",
-      },
-      {
-        id: "skills.txt",
-        type: "file",
-      },
-      {
-        id: "resume.txt",
-        type: "file",
-      },
-    ],
+    path: "/~/about",
   },
   {
     id: "ayroid.txt",
     name: "ayroid.txt",
     type: "file",
     parentId: "about",
-    childrenId: [],
+    path: "/~/about/ayroid.txt",
     content: aboutText,
   },
   {
@@ -51,7 +31,7 @@ export const fileStructure: fileStructureType[] = [
     name: "skills.txt",
     type: "file",
     parentId: "about",
-    childrenId: [],
+    path: "/~/about/skills.txt",
     content: skillsText,
   },
   {
@@ -59,7 +39,7 @@ export const fileStructure: fileStructureType[] = [
     name: "resume.txt",
     type: "file",
     parentId: "about",
-    childrenId: [],
+    path: "/~/about/resume.txt",
     content: resumeText,
   },
   {
@@ -67,35 +47,48 @@ export const fileStructure: fileStructureType[] = [
     name: "projects",
     type: "directory",
     parentId: "home",
-    childrenId: [
-      {
-        id: "ideos",
-        type: "directory",
-      },
-      {
-        id: "visual-rift",
-        type: "directory",
-      },
-    ],
+    path: "/~/projects",
+  },
+  {
+    id: "ideos",
+    name: "ideos",
+    type: "directory",
+    parentId: "projects",
+    path: "/~/projects/ideos",
+  },
+  {
+    id: "visual-rift",
+    name: "visual-rift",
+    type: "directory",
+    parentId: "projects",
+    path: "/~/projects/visual-rift",
   },
   {
     id: "blogs",
     name: "blogs",
     type: "directory",
     parentId: "home",
-    childrenId: [
-      {
-        id: "devops",
-        type: "directory",
-      },
-      {
-        id: "development",
-        type: "directory",
-      },
-      {
-        id: "system-design",
-        type: "directory",
-      },
-    ],
+    path: "/~/blogs",
+  },
+  {
+    id: "devops",
+    name: "devops",
+    type: "directory",
+    parentId: "blogs",
+    path: "/~/blogs/devops",
+  },
+  {
+    id: "development",
+    name: "development",
+    type: "directory",
+    parentId: "blogs",
+    path: "/~/blogs/development",
+  },
+  {
+    id: "system-design",
+    name: "system-design",
+    type: "directory",
+    parentId: "blogs",
+    path: "/~/blogs/system-design",
   },
 ];

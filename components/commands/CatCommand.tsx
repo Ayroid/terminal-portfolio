@@ -1,10 +1,25 @@
-
-import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
-import { fileStructureType } from "@/types/fileStructureType";
+import { FileSystemType } from "@/types/fileSystemType";
+import { useState, useEffect } from "react";
 
 const CatCommand = ({ targetFile }: { targetFile?: string }) => {
   const { currentPath } = useCurrentPath((state) => state);
+  const [fileSystem, setFileSystem] = useState<FileSystemType[]>([]);
+
+  useEffect(() => {
+    const fetchFileSystem = async () => {
+      try {
+        const response = await fetch("/api/filesystem/init");
+        if (!response.ok) throw new Error("Failed to fetch filesystem");
+        const data = await response.json();
+        setFileSystem(data);
+      } catch (error) {
+        console.error("Error fetching filesystem:", error);
+      }
+    };
+
+    fetchFileSystem();
+  }, []);
 
   const containsHTML = (text: string): boolean => {
     return /<[a-z][\s\S]*>/i.test(text);
@@ -24,38 +39,45 @@ const CatCommand = ({ targetFile }: { targetFile?: string }) => {
 
   const executeCatCommand = (targetFile?: string) => {
     if (!targetFile) return { output: "cat: missing operand", result: "error" };
+    if (fileSystem.length === 0) return { output: "", result: "loading" };
 
-    const currentDirectory: fileStructureType =
-      currentPath === "~"
-        ? fileStructure.find((file) => file.id === "home")!
-        : fileStructure.find(
-            (file) => file.id === currentPath.split("/").pop()
-          )!;
+    // Get current directory path
+    const basePath = currentPath === "~" ? "/~" : `/~/${currentPath}`;
+    const currentDirectory = fileSystem.find((file) => file.path === basePath);
 
-    const targetExists = currentDirectory?.childrenId?.find(
-      (child) => child.id === targetFile
+    if (!currentDirectory) {
+      return {
+        output: `cat: Failed to locate current directory`,
+        result: "error",
+      };
+    }
+
+    // Check if target file exists in current directory
+    const targetFilePath = `${basePath}/${targetFile}`;
+    const targetFileNode = fileSystem.find(
+      (file) => file.path === targetFilePath
     );
 
-    if (targetExists) {
-      if (targetExists.type === "file") {
-        const file = fileStructure.find((file) => file.id === targetFile)!;
-        return { output: file.content, result: "success" };
-      } else {
-        return {
-          output: `cat: ${targetFile}: Is a directory`,
-          result: "error",
-        };
-      }
-    } else {
+    if (!targetFileNode) {
       return {
         output: `cat: ${targetFile}: No such file or directory`,
         result: "error",
       };
     }
+
+    if (targetFileNode.type === "directory") {
+      return {
+        output: `cat: ${targetFile}: Is a directory`,
+        result: "error",
+      };
+    }
+
+    return { output: targetFileNode.content, result: "success" };
   };
 
   const { output, result } = executeCatCommand(targetFile);
 
+  if (result === "loading") return null;
   if (result === "error") {
     return <div className="text-red">{output}</div>;
   }

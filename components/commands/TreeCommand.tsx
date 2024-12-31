@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { fileStructure } from "@/data/fileStructure";
 import { useCurrentPath } from "@/store/currentPathStore";
+import { useFileSystem } from "@/store/fileSystemStore";
+import { useEffect, useState } from "react";
 
-const EchoCommand = () => {
-  const [treeStructure, setTreeStructure] = useState<
-    { name: string; depth: number; type: string; path: string }[]
-  >([]);
+const TreeCommand = () => {
+  const [treeStructure, setTreeStructure] = useState<{
+    name: string;
+    depth: number;
+    type: string;
+    path: string;
+  }[]>([]);
   const { currentPath } = useCurrentPath((state) => state);
+  const { files } = useFileSystem();
 
   useEffect(() => {
     const buildTree = () => {
-      const result: {
-        name: string;
-        depth: number;
-        type: string;
-        path: string;
-      }[] = [];
+      const result: { name: string; depth: number; type: string; path: string }[] = [];
 
       const traverse = (
-        nodeId: string,
-        depth: number,
-        isLast: boolean[] = [],
-        path: string = ""
+        path: string,
+        depth: number = 0,
+        isLast: boolean[] = []
       ) => {
-        const node = fileStructure.find((file) => file.id === nodeId);
+        const node = files.find((file) => file.path === path);
         if (!node) return;
 
         let prefix = "";
@@ -33,29 +31,34 @@ const EchoCommand = () => {
         if (depth > 0) {
           prefix += isLast[isLast.length - 1] ? "└── " : "├── ";
         }
-        const newPath = path ? `${path}/${node.name}` : node.name;
+
         result.push({
           name: prefix + node.name,
           depth,
           type: node.type,
-          path: newPath,
+          path: node.path,
         });
 
-        const children = fileStructure.filter(
-          (file) => file.parentId === node.id
-        );
+        const children = files
+          .filter((file) => {
+            const parentPath = file.path.substring(0, file.path.lastIndexOf('/'));
+            return parentPath === path;
+          })
+          .sort((a, b) => a.name.localeCompare(b.name));
+
         children.forEach((child, index) => {
-          const newIsLast = [...isLast, index === children.length - 1];
-          traverse(child.id, depth + 1, newIsLast, newPath);
+          traverse(child.path, depth + 1, [...isLast, index === children.length - 1]);
         });
       };
 
-      traverse("home", 0);
+      traverse("/~");
       return result;
     };
 
-    setTreeStructure(buildTree());
-  }, []);
+    if (files.length > 0) {
+      setTreeStructure(buildTree());
+    }
+  }, [files]);
 
   return (
     <div className="text-white font-mono whitespace-pre">
@@ -64,7 +67,7 @@ const EchoCommand = () => {
           key={index}
           className={
             item.path === currentPath
-              ? "text-orange"
+              ? "text-orange-400"
               : item.type === "directory"
               ? "text-blue-400"
               : ""
@@ -77,4 +80,4 @@ const EchoCommand = () => {
   );
 };
 
-export default EchoCommand;
+export default TreeCommand;

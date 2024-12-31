@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { useCurrentPath } from "@/store/currentPathStore";
+import { useFileSystem } from "@/store/fileSystemStore";
 import axios from "axios";
-
-import { fileStructure } from "@/data/fileStructure";
-import { fileStructureType } from "@/types/fileStructureType";
 
 interface RmCommandProps {
   target?: string;
-  recursive?: boolean; // For rm -r or rm -rf
+  recursive?: boolean;
 }
 
 const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
   const { currentPath } = useCurrentPath((state) => state);
+  const { files } = useFileSystem();
   const [output, setOutput] = useState<string>("");
 
   useEffect(() => {
@@ -22,48 +21,43 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
       }
 
       try {
-        // Get current directory
-        const parentId =
-          currentPath === "~" ? "home" : currentPath.split("/").pop();
-        const currentDirectory: fileStructureType | undefined =
-          fileStructure.find((file) => file.id === parentId);
+        const basePath = currentPath === "~" ? "/~" : currentPath;
+        const targetPath = `${basePath}/${target}`;
+        const targetNode = files.find(file => file.path === targetPath);
 
-        // Check if target exists in current directory
-        const targetExists = currentDirectory?.childrenId?.find(
-          (child) => child.id === target
-        );
-
-        if (!targetExists) {
+        if (!targetNode) {
           setOutput(`rm: cannot remove '${target}': No such file or directory`);
           return;
         }
 
-        // If target is a directory and recursive flag is not set
-        if (targetExists.type === "directory" && !recursive) {
-          setOutput(
-            `rm: cannot remove '${target}': Is a directory, use -r flag`
-          );
+        if (targetNode.type === "directory" && !recursive) {
+          setOutput(`rm: cannot remove '${target}': Is a directory, use -r flag`);
           return;
         }
 
-        // Proceed with deletion
+        if (targetPath === "/~" || targetPath === "/~/about") {
+          setOutput(`rm: cannot remove '${target}': Permission denied`);
+          return;
+        }
+
         await axios.delete(`/api/filesystem/rm`, {
           params: {
-            id: target,
-            parentId, // Send parentId to API for additional validation
-          },
+            path: targetPath,
+            recursive
+          }
         });
+
+        setOutput("");
       } catch (error: unknown) {
-        const errorMsg =
-          axios.isAxiosError(error) && error.response?.data?.error
-            ? error.response.data.error
-            : "Error occurred";
+        const errorMsg = axios.isAxiosError(error) && error.response?.data?.error
+          ? error.response.data.error
+          : "Error occurred";
         setOutput(`rm: cannot remove '${target}': ${errorMsg}`);
       }
     };
 
     executeRmCommand(target);
-  }, [target, recursive, currentPath]);
+  }, [target, recursive, currentPath, files]);
 
   return output ? <div className="text-red">{output}</div> : null;
 };

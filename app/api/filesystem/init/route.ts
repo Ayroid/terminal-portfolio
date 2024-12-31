@@ -1,10 +1,61 @@
-// app/api/filesystem/init/route.ts
+import mongoose from "mongoose";
 import FileSystem from "@/app/models/FileSystem";
 import { authOptions } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { fileStructure } from "@/data/fileStructure";
+import { FileSystemType } from "@/types/fileSystemType";
+
+async function createFileSystemNode(
+  file: FileSystemType,
+  ownerId: string,
+  parentPath: string = ''
+): Promise<mongoose.Document> {
+  const path = parentPath ? `${parentPath}/${file.name}` : `/${file.name}`;
+
+  const nodeData = {
+    ...file,
+    path,
+    owner: ownerId,
+  };
+
+  try {
+    return await FileSystem.create(nodeData);
+  } catch (error) {
+    console.error(`Error creating file system node ${file.id}:`, error);
+    throw error;
+  }
+}
+
+async function initializeFileSystem(
+  files: FileSystemType[],
+  ownerId: string
+): Promise<mongoose.Document[]> {
+  const createdNodes: mongoose.Document[] = [];
+  const nodeMap = new Map<string, string>(); // Map of id to path
+
+  // First pass: Create all directories
+  for (const file of files) {
+    if (file.type === 'directory') {
+      const parentPath = file.parentId ? nodeMap.get(file.parentId) || '' : '';
+      const node = await createFileSystemNode(file, ownerId, parentPath);
+      nodeMap.set(file.id, node.get('path'));
+      createdNodes.push(node);
+    }
+  }
+
+  // Second pass: Create all files
+  for (const file of files) {
+    if (file.type === 'file') {
+      const parentPath = nodeMap.get(file.parentId) || '';
+      const node = await createFileSystemNode(file, ownerId, parentPath);
+      createdNodes.push(node);
+    }
+  }
+
+  return createdNodes;
+}
 
 export async function GET() {
   try {
@@ -16,31 +67,34 @@ export async function GET() {
     await connectDB();
 
     // Check if user already has a file structure
-    let userFiles = await FileSystem.find({ owner: session.user.id });
+    let userFiles = await FileSystem.find({ owner: session.user.id })
+      .populate('children')
+      .sort('path');
 
     // If user doesn't have any files, initialize with default structure
     if (userFiles.length === 0) {
-      const filesWithOwner = fileStructure.map((file) => ({
-        ...file,
-        owner: session.user.id,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }));
-
-      userFiles = await FileSystem.insertMany(filesWithOwner);
+      try {
+        userFiles = await initializeFileSystem(fileStructure, session.user.id);
+      } catch (error) {
+        // Cleanup on error
+        await FileSystem.deleteMany({ owner: session.user.id });
+        throw error;
+      }
     }
 
     return NextResponse.json(userFiles, { status: 200 });
   } catch (error) {
     console.error("Error initializing filesystem:", error);
     return NextResponse.json(
-      { error: "Internal server error" },
+      {
+        error: "Internal server error",
+        details: error instanceof Error ? error.message : String(error),
+      },
       { status: 500 }
     );
   }
 }
 
-// API route to fetch file structure
 export async function POST() {
   try {
     const session = await getServerSession(authOptions);
@@ -50,7 +104,10 @@ export async function POST() {
 
     await connectDB();
 
-    const userFiles = await FileSystem.find({ owner: session.user.id });
+    const userFiles = await FileSystem.find({ owner: session.user.id })
+      .populate('children')
+      .sort('path');
+
     return NextResponse.json(userFiles, { status: 200 });
   } catch (error) {
     console.error("Error fetching filesystem:", error);

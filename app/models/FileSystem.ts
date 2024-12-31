@@ -5,7 +5,6 @@ const fileSystemSchema = new mongoose.Schema({
   id: {
     type: String,
     required: true,
-    unique: true,
   },
   name: {
     type: String,
@@ -16,14 +15,14 @@ const fileSystemSchema = new mongoose.Schema({
     enum: ['directory', 'file'],
     required: true,
   },
+  path: {
+    type: String,
+    required: true,
+  },
   parentId: {
     type: String,
     default: '',
   },
-  childrenId: [{
-    id: String,
-    type: String,
-  }],
   content: {
     type: String,
     default: '',
@@ -33,18 +32,24 @@ const fileSystemSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  }
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
 });
 
-// Add indexes for better query performance
+// Virtual field for children
+fileSystemSchema.virtual('children', {
+  ref: 'FileSystem',
+  localField: 'id',
+  foreignField: 'parentId',
+  justOne: false
+});
+
+// Indexes for better query performance
 fileSystemSchema.index({ id: 1, owner: 1 }, { unique: true });
+fileSystemSchema.index({ path: 1, owner: 1 }, { unique: true });
 fileSystemSchema.index({ parentId: 1 });
 
-export default mongoose.models.FileSystem || mongoose.model('FileSystem', fileSystemSchema);
+const FileSystem = mongoose.models.FileSystem || mongoose.model('FileSystem', fileSystemSchema);
+export default FileSystem;
