@@ -11,41 +11,45 @@ const CdCommand: React.FC<CdCommandProps> = ({ targetPath }) => {
   const { files } = useFileSystem();
   const [output, setOutput] = useState<string>("");
 
-  const executeCdCommand = useMemo(() => {
-    if (!targetPath) return { path: "~", error: "" };
+  const executeCdCommand = useMemo(
+    () => (targetPath?: string) => {
+      if (!targetPath) return { path: "~", error: "" };
 
-    if (targetPath === ".." || targetPath === "../") {
-      if (currentPath === "~") return { path: "~", error: "" };
-      const pathParts = currentPath.split("/");
-      pathParts.pop();
-      return { path: pathParts.join("/") || "~", error: "" };
-    }
+      if (targetPath === ".." || targetPath === "../") {
+        if (currentPath === "~") return { path: "~", error: "" };
+        const pathParts = currentPath.split("/");
+        pathParts.pop();
+        return { path: pathParts.join("/") || "~", error: "" };
+      }
 
-    if (targetPath === "~" || targetPath === "/")
-      return { path: "~", error: "" };
-    if (targetPath === ".") return { path: currentPath, error: "" };
+      if (targetPath === "~" || targetPath === "/")
+        return { path: "~", error: "" };
+      if (targetPath === ".") return { path: currentPath, error: "" };
 
-    const newPath = `${currentPath}/${targetPath}`;
-    const targetDir = files.find((file) => file.path === newPath);
+      const newPath = `${currentPath}/${targetPath}`;
+      const targetDir = files.find((file) => file.path === newPath);
 
-    if (!targetDir) {
-      return {
-        path: currentPath,
-        error: `cd: no such file or directory: ${targetPath}`,
-      };
-    }
+      if (!targetDir) {
+        return {
+          path: currentPath,
+          error: `cd: no such file or directory: ${targetPath}`,
+        };
+      }
 
-    return targetDir.type === "directory" && targetDir.name === targetPath
-      ? { path: newPath, error: "" }
-      : { path: currentPath, error: `cd: not a directory: ${targetPath}` };
-  }, [targetPath, currentPath, files]);
+      return targetDir.type === "directory" && targetDir.name === targetPath
+        ? { path: newPath, error: "" }
+        : { path: currentPath, error: `cd: not a directory: ${targetPath}` };
+    },
+    [currentPath, files]
+  );
 
   useEffect(() => {
     if (!targetPath) return;
-    const { path, error } = executeCdCommand;
+    const { path, error } = executeCdCommand(targetPath);
     if (path !== currentPath) setCurrentPath(path);
     setOutput(error);
-  }, [targetPath]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return output ? <div className="text-red">{output}</div> : null;
 };
