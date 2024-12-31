@@ -1,6 +1,6 @@
-import React from "react";
 import { useFileSystem } from "@/store/fileSystemStore";
 import type { FileSystemType } from "@/types/fileSystemType";
+import React from "react";
 
 interface LSCommandProps {
   commandPath: string;
@@ -10,7 +10,7 @@ const LSCommand: React.FC<LSCommandProps> = ({ commandPath }) => {
   const { files } = useFileSystem();
 
   const executeLsCommand = (commandPath: string): FileSystemType[] => {
-    const absolutePath = commandPath === "~" ? "/~" : `/~/${commandPath}`;
+    const absolutePath = commandPath === "~" ? "~" : `~/${commandPath}`;
 
     return files.filter((file) => {
       const parentPath = file.path.substring(0, file.path.lastIndexOf("/"));
