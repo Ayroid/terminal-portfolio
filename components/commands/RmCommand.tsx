@@ -57,7 +57,8 @@ const RmCommand: React.FC<RmCommandProps> = ({ target, recursive = false }) => {
     };
 
     executeRmCommand(target);
-  }, [target, recursive, currentPath, files, removeFile]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return output ? <div className="text-red-500">{output}</div> : null;
 };

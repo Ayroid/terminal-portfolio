@@ -1,12 +1,13 @@
-import React, { useEffect } from "react";
 import {
+  CommandOutput,
   useCommandLineHistory,
   type Command,
 } from "@/store/commandLineHistoryStore";
+import React, { useEffect } from "react";
 
 interface HistoryCommandProps {
   commandId: string;
-  commandOutput?: React.ReactNode | Command[];
+  commandOutput?: CommandOutput;
 }
 
 const HistoryCommand: React.FC<HistoryCommandProps> = ({
@@ -39,7 +40,7 @@ const HistoryCommand: React.FC<HistoryCommandProps> = ({
 
   return (
     <div className="font-mono text-lg my-2 space-y-1">
-      {renderHistory(displayHistory)}
+      {renderHistory(displayHistory as Command[])}
     </div>
   );
 };

@@ -55,7 +55,8 @@ const TouchCommand: React.FC<TouchCommandProps> = ({ fileName }) => {
     };
 
     executeTouchCommand(fileName);
-  }, [fileName, currentPath, files, addFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return output ? <div className="text-red-500">{output}</div> : null;
 };

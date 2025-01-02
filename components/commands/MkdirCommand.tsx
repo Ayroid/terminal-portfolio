@@ -58,7 +58,8 @@ const MkdirCommand: React.FC<MkdirCommandProps> = ({ dirName }) => {
     };
 
     executeMkdirCommand(dirName);
-  }, [dirName, currentPath, files, addFile]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return output ? <div className="text-red">{output}</div> : null;
 };

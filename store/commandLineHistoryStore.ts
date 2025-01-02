@@ -1,4 +1,7 @@
+import { FileSystemType } from "@/types/fileSystemType";
 import { create } from "zustand";
+
+export type CommandOutput = React.ReactNode | Command[] | FileSystemType[];
 
 export type Command = {
   commandId: string;
@@ -7,7 +10,7 @@ export type Command = {
     currentPath: string;
   };
   command: string;
-  commandOutput?: React.ReactNode | Command[];
+  commandOutput?: CommandOutput;
 };
 
 type State = {
@@ -16,7 +19,7 @@ type State = {
 
 type Actions = {
   addCommand: (command: Command) => void;
-  updateCommandOutput: (commandId: string, output: React.ReactNode | Command[]) => void;
+  updateCommandOutput: (commandId: string, output: CommandOutput) => void;
   clearHistory: () => void;
 };
 
