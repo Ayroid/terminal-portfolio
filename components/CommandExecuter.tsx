@@ -65,7 +65,7 @@ const CommandExecuter: React.FC<CommandExecuterProps> = ({ command }) => {
       return <HelpCommand />;
 
     case "history":
-      return <HistoryCommand />;
+      return <HistoryCommand commandId={command.commandId} commandOutput={command.commandOutput} />;
 
     case "linkedin":
       return <LinkedInCommand />;

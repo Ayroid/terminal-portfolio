@@ -1,10 +1,10 @@
 "use client";
 import CommandExecuter from "@/components/CommandExecuter";
 import { Input } from "@/components/ui/input";
+import { username } from "@/data/constants";
 import { useCommandLineHistory } from "@/store/commandLineHistoryStore";
 import { useCurrentPath } from "@/store/currentPathStore";
 import React from "react";
-import { username } from "@/data/constants";
 
 const CommandPath = ({ currentPath }: { currentPath: string }) => {
   return (
@@ -17,7 +17,7 @@ const CommandPath = ({ currentPath }: { currentPath: string }) => {
     </div>
   );
 };
-const  CommandInput = () => {
+const CommandInput = () => {
   const { commandLineHistory, addCommand } = useCommandLineHistory(
     (state) => state
   );
@@ -28,6 +28,7 @@ const  CommandInput = () => {
   const handleCommand = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     addCommand({
+      commandId: Date.now().toString() + Math.random().toString(),
       commandPath: {
         username: username,
         currentPath: currentPath,
