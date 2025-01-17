@@ -1,34 +1,50 @@
+import {
+  CommandOutput,
+  useCommandLineHistory,
+} from "@/store/commandLineHistoryStore";
+import { useFileSystem } from "@/store/fileSystemStore";
+import type { FileSystemType } from "@/types/fileSystemType";
 import React from "react";
-import type { fileStructureType } from "../../data/fileStructure";
-import { fileStructure } from "../../data/fileStructure";
 
-const LSCommand = ({ commandPath }: { commandPath: string }) => {
-  const executeLsCommand = (
-    commandPath: string
-  ): { id: string; type: string }[] => {
-    const currentDirectory: fileStructureType =
-      commandPath === "~"
-        ? fileStructure.filter((file) => file.id === "home")[0]
-        : fileStructure.filter(
-            (file) => file.id === commandPath.split("/").pop()
-          )[0];
+interface LSCommandProps {
+  commandPath: string;
+  commandId: string;
+  commandOutput?: CommandOutput;
+}
 
-    const children = currentDirectory?.childrenId || [];
-    return children;
+const LSCommand: React.FC<LSCommandProps> = ({
+  commandPath,
+  commandId,
+  commandOutput,
+}) => {
+  const { files } = useFileSystem();
+
+  const { updateCommandOutput } = useCommandLineHistory((state) => state);
+
+  const executeLsCommand = (): FileSystemType[] => {
+    const result = files.filter((file) => {
+      const parentPath = file.path.substring(0, file.path.lastIndexOf("/"));
+      return parentPath === commandPath;
+    });
+
+    updateCommandOutput(commandId, result);
+    return result;
   };
 
-  const commandResult = executeLsCommand(commandPath);
+  const commandResult: FileSystemType[] = commandOutput
+    ? (commandOutput as FileSystemType[])
+    : executeLsCommand();
 
   return (
-    <div className="flex flex-row gap-4">
-      {commandResult.map((result: { id: string; type: string }) => (
+    <div className="flex flex-row flex-wrap gap-4">
+      {commandResult.map((result) => (
         <p
           key={result.id}
           className={
             result.type === "directory" ? "text-blue-500" : "text-white"
           }
         >
-          {result.id}
+          {result.name}
         </p>
       ))}
     </div>

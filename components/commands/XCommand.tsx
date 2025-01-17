@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 
-const TwitterCommand: React.FC = () => {
+const XCommand: React.FC = () => {
   useMemo(() => {
     const openLinkedIn = () => {
       window.open("https://x.com/ayroids", "_blank");
@@ -12,4 +12,4 @@ const TwitterCommand: React.FC = () => {
   return null;
 };
 
-export default TwitterCommand;
+export default XCommand;
