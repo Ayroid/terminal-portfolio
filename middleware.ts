@@ -1,11 +1,8 @@
+import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import { NextRequestWithAuth } from "next-auth/middleware";
 
-export default async function middleware(req: NextRequestWithAuth) {
-  const token = await getToken({ req });
-  const isAuthenticated = !!token;
-
+export default auth((req) => {
+  const isAuthenticated = !!req.auth;
   const path = req.nextUrl.pathname;
 
   if (path.startsWith("/private") && !isAuthenticated) {
@@ -17,7 +14,7 @@ export default async function middleware(req: NextRequestWithAuth) {
   }
 
   return NextResponse.next();
-}
+});
 
 export const config = {
   matcher: ["/private/:path*", "/auth/signin"],

@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 import FileSystem from "@/app/models/FileSystem";
-import { authOptions } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { connectDB } from "@/lib/db";
-import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { fileStructure } from "@/data/fileStructure";
 import { FileSystemType } from "@/types/fileSystemType";
@@ -64,7 +63,7 @@ async function initializeFileSystem(
 
 export async function GET() {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -99,7 +98,7 @@ export async function GET() {
 
 export async function POST() {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

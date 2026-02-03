@@ -1,11 +1,18 @@
 'use client';
 
-import type { ClientSafeProvider } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 
+interface Provider {
+  id: string;
+  name: string;
+  type: string;
+  signinUrl: string;
+  callbackUrl: string;
+}
+
 interface SignInComponentProps {
-  providers: Record<string, ClientSafeProvider>;
+  providers: Record<string, Provider>;
 }
 
 export default function SignInComponent({ providers }: SignInComponentProps) {
@@ -15,7 +22,7 @@ export default function SignInComponent({ providers }: SignInComponentProps) {
     <div className="space-y-4 w-full max-w-md p-8">
       <div className="space-y-2">
         {Object.values(providers).map((provider) => {
-          if (provider.id === "email") {
+          if (provider.id === "email" || provider.id === "resend") {
             return (
               <div key={provider.id}>
                 <input
