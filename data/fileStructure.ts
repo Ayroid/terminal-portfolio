@@ -1,4 +1,5 @@
 import aboutText from "@/data/content/about";
+import microgradBlog from "@/data/content/micrograd-blog";
 import projects from "@/data/content/projects";
 import resumeText from "@/data/content/resume";
 import skillsText from "@/data/content/skills";
@@ -64,6 +65,21 @@ export const fileStructure: FileSystemType[] = [
     type: "directory",
     parentId: "home",
     path: "~/blogs",
+  },
+  {
+    id: "ai",
+    name: "ai",
+    type: "directory",
+    parentId: "blogs",
+    path: "~/blogs/ai",
+  },
+  {
+    id: "building-micrograd.txt",
+    name: "building-micrograd.txt",
+    type: "file",
+    parentId: "ai",
+    path: "~/blogs/ai/building-micrograd.txt",
+    content: microgradBlog,
   },
   {
     id: "devops",
