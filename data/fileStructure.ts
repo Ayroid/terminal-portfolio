@@ -1,4 +1,5 @@
 import aboutText from "@/data/content/about";
+import projects from "@/data/content/projects";
 import resumeText from "@/data/content/resume";
 import skillsText from "@/data/content/skills";
 import { FileSystemType } from "@/types/fileSystemType";
@@ -49,20 +50,14 @@ export const fileStructure: FileSystemType[] = [
     parentId: "home",
     path: "~/projects",
   },
-  {
-    id: "ideos",
-    name: "ideos",
-    type: "directory",
+  ...projects.map((p) => ({
+    id: `${p.slug}.txt`,
+    name: `${p.slug}.txt`,
+    type: "file" as const,
     parentId: "projects",
-    path: "~/projects/ideos",
-  },
-  {
-    id: "visual-rift",
-    name: "visual-rift",
-    type: "directory",
-    parentId: "projects",
-    path: "~/projects/visual-rift",
-  },
+    path: `~/projects/${p.slug}.txt`,
+    content: `<div><br/><strong>${p.name}</strong> [${p.status}]<br/><br/>${p.desc}<br/><br/>🔗 <a href="${p.link}" target="_blank" rel="noopener noreferrer">${p.link}</a><br/></div>`,
+  })),
   {
     id: "blogs",
     name: "blogs",
